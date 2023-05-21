@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('register', [RegisterController::class, 'register'])->name('register');
+Route::post('register', [AuthController::class, 'register'])->name('register');
+
+Route::post('login', [AuthController::class, 'login'])->name('register');
 
 Route::get('/example', function () {
     return response()->json(['message' => 'This is an example route.']);
