@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailVerifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,4 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::post('login', [AuthController::class, 'login'])->name('register');
 
-Route::get('/example', function () {
-    return response()->json(['message' => 'This is an example route.']);
-});
+Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVerify'])->name('verification.verify');
