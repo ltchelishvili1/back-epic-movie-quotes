@@ -3,22 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        unset($validated['repeat_password']);
-        $user = User::create($validated);
-        event(new Registered($user));
-        return response()->json('success', 201);
-    }
-
     public function login(LoginRequest $request): JsonResponse
     {
         $validated = $request->validated();
