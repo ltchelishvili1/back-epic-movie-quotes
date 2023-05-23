@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -13,12 +13,38 @@ class AuthController extends Controller
         $validated = $request->validated();
         $fieldType = filter_var($validated['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        if (!auth()->attempt([$fieldType => $validated['username'], 'password' => $validated['password']], $request->input('remember_me'))) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+        if (auth()->attempt([
+            $fieldType => $validated['username'],
+            'password' => $validated['password']])) {
+
+            $user = $request->user();
+
+            $token = $user->createToken('authToken')->plainTextToken;
+
+            $user ->update([
+                'session_token' => $token,
+                'expiration_date' => Carbon::now()->addMinutes(30)
+            ]);
+            $cookie = cookie("access_token", $token, 30);
+            return response()->json(['token' => $token])->withCookie($cookie);
         }
 
-        return response()->json(['success' => 'Login successful'], 200);
+
     }
+
+
+    public function me(): JsonResponse
+    {
+
+        return response()->json(
+            [
+                'message' => 'authenticated successfully',
+             'user' => isUserAuth()
+            ],
+            200
+        );
+    }
+
 
 
 
