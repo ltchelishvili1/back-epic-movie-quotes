@@ -17,7 +17,7 @@ class AuthController extends Controller
             [
             $fieldType => $validated['username'],
             'password' => $validated['password']],
-            $request->input('remember_me')
+            $validated['remember_me'] || false
         )) {
 
             $user = $request->user();

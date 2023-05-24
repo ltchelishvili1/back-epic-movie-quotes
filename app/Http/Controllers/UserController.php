@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function getUser(): JsonResponse
+    public function index(): JsonResponse
     {
 
         return response()->json(
