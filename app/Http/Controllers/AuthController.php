@@ -13,9 +13,12 @@ class AuthController extends Controller
         $validated = $request->validated();
         $fieldType = filter_var($validated['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        if (auth()->attempt([
+        if (auth()->attempt(
+            [
             $fieldType => $validated['username'],
-            'password' => $validated['password']])) {
+            'password' => $validated['password']],
+            $request->input('remember_me')
+        )) {
 
             $user = $request->user();
 
@@ -32,18 +35,6 @@ class AuthController extends Controller
 
     }
 
-
-    public function me(): JsonResponse
-    {
-
-        return response()->json(
-            [
-                'message' => 'authenticated successfully',
-             'user' => isUserAuth()
-            ],
-            200
-        );
-    }
 
 
 
