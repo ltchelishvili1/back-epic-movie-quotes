@@ -24,4 +24,12 @@ class RegisterRequest extends FormRequest
             'repeat_password'=> 'required|same:password',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'username.unique' => 'username already taken',
+            'email.unique' => 'email already taken'
+        ];
+    }
 }

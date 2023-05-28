@@ -13,11 +13,13 @@ class AuthController extends Controller
         $validated = $request->validated();
         $fieldType = filter_var($validated['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
+
+
         if (auth()->attempt(
             [
             $fieldType => $validated['username'],
             'password' => $validated['password']],
-            $validated['remember_me'] || false
+            $validated['remember_me']
         )) {
 
             $user = $request->user();
@@ -30,12 +32,20 @@ class AuthController extends Controller
             ]);
             $cookie = cookie("access_token", $token, 30);
             return response()->json(['token' => $token])->withCookie($cookie);
+        } else {
+            return response()->json(['errors' => ['password' => ['Invalid credentials!']]], 404);
         }
 
 
     }
 
 
+
+   public function logout(): JsonResponse
+   {
+       $cookie = cookie("access_token", '', 0);
+       return response()->json(['message' => 'Successfully logged out'])->withCookie($cookie);
+   }
 
 
 
