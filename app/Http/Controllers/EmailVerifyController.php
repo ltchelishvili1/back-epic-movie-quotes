@@ -8,13 +8,17 @@ use Illuminate\Http\Request;
 
 class EmailVerifyController extends Controller
 {
-    public function emailVerify(Request $request): JsonResponse
+    public function emailVerify(Request $request)
     {
         $user = User::find($request->id);
 
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
+            return redirect(
+                env('FRONT_END_BASE_URL') . 'landing'
+            );
+        } else {
+            return response()->json(['message' => 'already verified'], 400);
         }
-        return response()->json(['message' => 'Successfully verified'], 200);
     }
 }
