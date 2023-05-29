@@ -31,4 +31,9 @@ Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVer
 Route::get('/user', [UserController::class, 'index'])->middleware('jwt.auth')->name('user.index');
 
 
-Route::post('reset-password', [ResetPasswordController::class, 'resetPassword'])->name('resetpassword.reset');
+Route::post('forgot-password', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
+
+Route::post('reset-password', [ResetPasswordController::class, 'updatePassword'])->name('password.change');
+
+
+Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);

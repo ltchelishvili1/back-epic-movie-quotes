@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ResetPasswordRequest extends FormRequest
+class UpdatePasswordRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +14,11 @@ class ResetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'          => 'required|email|max:255',
+            'email'          => 'required|max:255',
+            'token'          => 'required|max:255',
+            'password'       => 'required|min:3|max:255',
+            'repeat_password'=> 'required|same:password',
         ];
 
     }
-
 }

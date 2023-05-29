@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers;
@@ -19,7 +18,7 @@ class EmailVerifyController extends Controller
                 env('FRONT_END_BASE_URL') . 'landing'
             );
         } else {
-            return response()->json(['message' => 'already verifies'], 400);
+            return response()->json(['message' => 'already verified'], 400);
         }
     }
 }
