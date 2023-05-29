@@ -20,20 +20,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('register', [RegisterController::class, 'register'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
-Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
-Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVerify'])->name('verification.verify');
 
 Route::get('/user', [UserController::class, 'index'])->middleware('jwt.auth')->name('user.index');
 
 
-Route::post('forgot-password', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
+Route::post('/forgot-password', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
 
-Route::post('reset-password', [ResetPasswordController::class, 'updatePassword'])->name('password.change');
+Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'])->name('password.change');
 
 
 Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
