@@ -29,7 +29,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVerify'])->name('verification.verify');
 
-Route::get('/user', [UserController::class, 'index'])->middleware('jwt.auth')->name('user.index');
+Route::get('/user', [UserController::class, 'index'])->middleware('auth:sanctum')->name('user.index');
 
 
 Route::post('/forgot-password', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
@@ -38,12 +38,6 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 
 
 Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return response()->json('done');
-});
-
-
 
 Route::middleware('auth:sanctum')->group(
     function () {
