@@ -31,7 +31,7 @@ class ResetPassword extends ResetPasswordBase
         ->subject('Reset Password')
         ->view(
             'email.reset-message',
-            ['url' =>  env('FRONT_END_BASE_URL') . 'email-verify-token=' .$token . '/email=' . $modifiedEmail,
+            ['url' =>  env('FRONT_END_BASE_URL') . '/email-verify-token=' .$token . '/email=' . $modifiedEmail,
             'name' => $notifiable->name]
         );
     }
