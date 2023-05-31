@@ -9,6 +9,7 @@ use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
@@ -33,7 +34,8 @@ class ResetPasswordController extends Controller
         $resetRequest = PasswordReset::where('token', $validated['token'])->where('email', $validated['email'])->first();
         if($resetRequest) {
             $email = base64_decode($validated['email']);
-            User::where('email', $email)->first()->update(['password' => $validated['password']]);
+            $user =  User::where('email', $email)->first();
+            $user->update(['password' => $validated['password']]);
             return response()->json(['message' => 'Password succesfuly changed', 200]);
         }
 

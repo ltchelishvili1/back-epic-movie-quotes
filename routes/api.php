@@ -6,6 +6,7 @@ use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,3 +38,15 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 
 
 Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return response()->json('done');
+});
+
+
+
+Route::middleware('auth:sanctum')->group(
+    function () {
+        Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    }
+);

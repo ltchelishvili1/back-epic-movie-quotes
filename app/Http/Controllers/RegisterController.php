@@ -19,8 +19,7 @@ class RegisterController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password']]
         );
-        $token =  $user->createToken('MyApp')->plainTextToken;
         event(new Registered($user));
-        return response()->json(['success' => 'Register successful', 'token' => $token], 201);
+        return response()->json(['success' => 'Register successful'], 201);
     }
 }

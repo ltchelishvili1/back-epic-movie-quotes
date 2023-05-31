@@ -15,7 +15,7 @@ class EmailVerifyController extends Controller
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
             return redirect(
-                env('FRONT_END_BASE_URL') . 'landing'
+                env('FRONT_END_BASE_URL') . '/account-activated'
             );
         } else {
             return response()->json(['message' => 'already verified'], 400);
