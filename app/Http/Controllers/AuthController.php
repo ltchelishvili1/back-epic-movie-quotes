@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -17,13 +16,21 @@ class AuthController extends Controller
         if (auth()->attempt(
             [
             $fieldType => $validated['username'],
-            'password' => $validated['password']],
+            'password' => $validated['password'],
+            'email_verified_at' => '!='
+            ],
             $validated['remember_me']
         )) {
             request()->session()->regenerate();
             return response()->json(['message'=>'successfully logged in'], 200);
         } else {
-            return response()->json(['errors' => ['password' => ['Invalid credentials!']]], 404);
+            $user = User::where($fieldType, $validated['username'])->first();
+
+            if ($user && $user->email_verified_at === null) {
+                return response()->json(['errors' => ['password' => [__('validation.please_verify_email')]]], 404);
+
+            }
+            return response()->json(['errors' => ['password' => [__('validation.invalid_credentials')]]], 404);
         }
 
 

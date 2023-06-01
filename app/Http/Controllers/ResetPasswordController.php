@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\checkTokenRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\UpdatePasswordRequest;
+use App\Models\PasswordHistory;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
@@ -31,11 +32,35 @@ class ResetPasswordController extends Controller
     public function updatePassword(UpdatePasswordRequest $request)
     {
         $validated = $request->validated();
+
         $resetRequest = PasswordReset::where('token', $validated['token'])->where('email', $validated['email'])->first();
         if($resetRequest) {
             $email = base64_decode($validated['email']);
             $user =  User::where('email', $email)->first();
+            $passwordHistories = PasswordHistory::where('email', base64_encode($user->email))->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+            foreach ($passwordHistories as $passwordHistory) {
+                if(Hash::check($validated['password'], $passwordHistory->password)) {
+                    return response()->json(['errors' => ['password' => [__('validation.password_has_been_used')]]], 400);
+                }
+            }
+
+            if($user->google_id != null) {
+                return response()->json(['errors' => ['password' => [__('validation.sign_in_with_google')]]], 400);
+            }
+
+
             $user->update(['password' => $validated['password']]);
+
+            PasswordHistory::create(
+                [
+                    'email' => $resetRequest->email,
+                    'password' => $user->password
+                ]
+            );
+
+
             return response()->json(['message' => 'Password succesfuly changed', 200]);
         }
 

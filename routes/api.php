@@ -4,6 +4,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
@@ -50,3 +51,6 @@ Route::middleware('auth:sanctum')->group(
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     }
 );
+
+
+Route::get('set-language/{language}', [LanguageController::class, 'setLanguage'])->name('set-language');
