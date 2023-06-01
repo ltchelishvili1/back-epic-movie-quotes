@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerifyController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,11 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 
 
 Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
+
+Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google.auth');
+Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google.auth');
+
+
 
 Route::middleware('auth:sanctum')->group(
     function () {
