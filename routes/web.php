@@ -13,7 +13,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
-Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google.auth');
-Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google.auth');

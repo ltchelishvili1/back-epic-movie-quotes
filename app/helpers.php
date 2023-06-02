@@ -1,22 +1,18 @@
 <?php
 
-use App\Models\User;
+use App\Models\PasswordHistory;
 
 function isUserAuth()
 {
-    try {
-        if (!request()->cookie('access_token') && !request()->header('Authorization')) {
-            throw new \ErrorException('Token is not provided');
-        }
+    $user = auth()->user();
+    return response()->json(['user'=>$user]);
+}
 
-        $user = User::where('session_token', request()->cookie('access_token'))->first();
+function addPasswordHistory($email, $password)
+{
 
-        if (!$user) {
-            throw new \ErrorException('User not found');
-        }
-
-        return $user;
-    } catch (\Exception $e) {
-        return null;
-    }
+    PasswordHistory::create([
+        'email' => $email,
+        'password' => $password
+    ]);
 }

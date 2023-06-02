@@ -13,5 +13,6 @@ return [
     'invalid_credentials'					=> 'არასწორი მონაცემები',
     'sign_in_with_google'                   => 'გაიარე ავტორიზაცია გუგლით',
     'password_has_been_used'				=> 'ეს პაროლი უკვე გამოყენებულია',
-    'please_verify_email'					=> 'დაადასტურე ელ-ფოსტა'
+    'please_verify_email'					=> 'დაადასტურე ელ-ფოსტა',
+    'something_went_wrong'                  => 'შეცდომა, მოგვიანებით სცადეთ!'
 ];

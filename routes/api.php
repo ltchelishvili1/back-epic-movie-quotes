@@ -41,9 +41,8 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 
 Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
 
-Route::get('auth/google', [GoogleAuthController::class, 'redirect'])->name('google.auth');
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google.auth');
 Route::get('auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle'])->name('google.auth');
-
 
 
 Route::middleware('auth:sanctum')->group(

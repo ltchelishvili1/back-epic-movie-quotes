@@ -19,29 +19,20 @@ class GoogleAuthController extends Controller
         try {
             $google_user= Socialite::driver('google')->stateless()->user();
 
-            $user = User::where('google_id', $google_user->getId())->first();
+            $user = User::firstWhere('google_id', $google_user->getId());
 
             if(!$user) {
-                $new_user = User::create([
+                $user = User::create([
                     'username' => $google_user->getName(),
                     'email' => $google_user->getEmail(),
                     'google_id' => $google_user->getId()
                 ]);
-
-                Auth::login($new_user);
-                request()->session()->regenerate();
-                return redirect(env('FRONT_END_BASE_URL') . '/landing');
-            } else {
-                Auth::login($user);
-                request()->session()->regenerate();
-                return redirect(env('FRONT_END_BASE_URL') . '/landing');
             }
-
-            return response()->json('fe');
-
+            Auth::login($user);
+            return redirect(env('FRONT_END_BASE_URL') . '/landing');
 
         } catch(\Throwable $th) {
-            dd('something went wrong!' . $th->getMessage());
+            return response()->json(['errors' => ['password' => [__('validation.something_went_wrong')]]], 404);
         }
     }
 }

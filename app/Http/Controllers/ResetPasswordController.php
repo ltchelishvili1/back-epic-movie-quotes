@@ -53,13 +53,7 @@ class ResetPasswordController extends Controller
 
             $user->update(['password' => $validated['password']]);
 
-            PasswordHistory::create(
-                [
-                    'email' => $resetRequest->email,
-                    'password' => $user->password
-                ]
-            );
-
+            addPasswordHistory($resetRequest->email, $user->password);
 
             return response()->json(['message' => 'Password succesfuly changed', 200]);
         }

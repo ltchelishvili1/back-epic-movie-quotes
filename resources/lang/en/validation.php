@@ -12,6 +12,7 @@ return [
     'invalid_credentials'                   => 'Invalid Credentials',
     'sign_in_with_google'                   => 'Sign in with google!',
     'password_has_been_used'				=> 'This password has been used',
-    'please_verify_email'					=> 'Please verify Email'
+    'please_verify_email'					=> 'Please verify Email',
+    'something_went_wrong'                  => 'Something Went Wrong!'
 
 ];

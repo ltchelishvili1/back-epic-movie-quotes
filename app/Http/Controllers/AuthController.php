@@ -17,19 +17,13 @@ class AuthController extends Controller
             [
             $fieldType => $validated['username'],
             'password' => $validated['password'],
-            'email_verified_at' => '!='
             ],
             $validated['remember_me']
         )) {
+
             request()->session()->regenerate();
             return response()->json(['message'=>'successfully logged in'], 200);
         } else {
-            $user = User::where($fieldType, $validated['username'])->first();
-
-            if ($user && $user->email_verified_at === null) {
-                return response()->json(['errors' => ['password' => [__('validation.please_verify_email')]]], 404);
-
-            }
             return response()->json(['errors' => ['password' => [__('validation.invalid_credentials')]]], 404);
         }
 
@@ -42,6 +36,10 @@ class AuthController extends Controller
    {
        request()->session()->invalidate();
        request()->session()->regenerateToken();
+       foreach ($_COOKIE as $name => $value) {
+           setcookie($name, '', time() - 3600, '/');
+       }
+
 
        return response()->json(['message' => 'Logged out']);
    }
