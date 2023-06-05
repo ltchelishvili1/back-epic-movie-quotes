@@ -7,7 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class GoogleAuthController extends Controller
+class OAuthController extends Controller
 {
     public function redirect()
     {
@@ -19,20 +19,18 @@ class GoogleAuthController extends Controller
         try {
             $google_user= Socialite::driver('google')->stateless()->user();
 
-            $user = User::firstWhere('google_id', $google_user->getId());
 
-            if(!$user) {
-                $user = User::create([
-                    'username' => $google_user->getName(),
-                    'email' => $google_user->getEmail(),
-                    'google_id' => $google_user->getId()
-                ]);
-            }
+            $user = User::updateOrCreate([
+                'username' => $google_user->getName(),
+                'email' => $google_user->getEmail(),
+                'google_id' => $google_user->getId()
+            ]);
+
             Auth::login($user);
             return redirect(env('FRONT_END_BASE_URL') . '/landing');
 
         } catch(\Throwable $th) {
-            return response()->json(['errors' => ['password' => [__('validation.something_went_wrong')]]], 404);
+            return response()->json(['errors' => [__('validation.something_went_wrong')]], 400);
         }
     }
 }

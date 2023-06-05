@@ -22,8 +22,6 @@ class RegisterController extends Controller
             'password' => $validated['password']]
         );
 
-        addPasswordHistory(base64_encode($validated['email']), Hash::make($validated['password']));
-
         event(new Registered($user));
         return response()->json(['success' => 'Register successful'], 201);
     }

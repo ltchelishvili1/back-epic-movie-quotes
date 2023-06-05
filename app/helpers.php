@@ -2,17 +2,12 @@
 
 use App\Models\PasswordHistory;
 
-function isUserAuth()
+function addPasswordHistory($user_id, $password)
 {
-    $user = auth()->user();
-    return response()->json(['user'=>$user]);
-}
-
-function addPasswordHistory($email, $password)
-{
-
-    PasswordHistory::create([
-        'email' => $email,
-        'password' => $password
-    ]);
+    if(isset($password)) {
+        PasswordHistory::create([
+            'user_id' => $user_id,
+            'password' => $password
+        ]);
+    }
 }

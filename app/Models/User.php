@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
@@ -43,6 +44,17 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'remember_token',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            $password = isset($user->password) ? $user->password : null;
+            addPasswordHistory($user->id, $password);
+        });
+
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -61,5 +73,10 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    public function PasswordHistories(): HasMany
+    {
+        return $this->hasMany(PasswordHistory::class);
     }
 }
