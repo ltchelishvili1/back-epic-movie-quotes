@@ -44,17 +44,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'remember_token',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($user) {
-            $password = isset($user->password) ? $user->password : null;
-            addPasswordHistory($user->id, $password);
-        });
-
-    }
-
     /**
      * The attributes that should be cast.
      *
