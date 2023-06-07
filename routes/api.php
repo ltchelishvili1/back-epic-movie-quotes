@@ -3,6 +3,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerifyController;
+use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
@@ -39,8 +41,15 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 
 Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
 
+Route::get('/auth/google', [OAuthController::class, 'redirect'])->name('google.auth');
+Route::get('auth/google/call-back', [OauthController::class, 'callbackGoogle'])->name('google.auth');
+
+
 Route::middleware('auth:sanctum')->group(
     function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     }
 );
+
+
+Route::get('set-language/{language}', [LanguageController::class, 'setLanguage'])->name('set-language');

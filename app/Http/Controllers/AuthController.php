@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -17,13 +16,15 @@ class AuthController extends Controller
         if (auth()->attempt(
             [
             $fieldType => $validated['username'],
-            'password' => $validated['password']],
+            'password' => $validated['password'],
+            ],
             $validated['remember_me']
         )) {
+
             request()->session()->regenerate();
             return response()->json(['message'=>'successfully logged in'], 200);
         } else {
-            return response()->json(['errors' => ['password' => ['Invalid credentials!']]], 404);
+            return response()->json(['errors' => ['password' => [__('validation.invalid_credentials')]]], 404);
         }
 
 
@@ -35,6 +36,10 @@ class AuthController extends Controller
    {
        request()->session()->invalidate();
        request()->session()->regenerateToken();
+       foreach ($_COOKIE as $name => $value) {
+           setcookie($name, '', time() - 3600, '/');
+       }
+
 
        return response()->json(['message' => 'Logged out']);
    }

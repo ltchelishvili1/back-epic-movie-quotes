@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
@@ -29,7 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'email',
         'password',
         'expiration_date',
-        'session_token'
+        'session_token',
+        'google_id'
     ];
 
     /**
@@ -60,5 +62,10 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    public function PasswordHistories(): HasMany
+    {
+        return $this->hasMany(PasswordHistory::class);
     }
 }

@@ -12,7 +12,7 @@ class UserController extends Controller
         return response()->json(
             [
                 'message' => 'authenticated successfully',
-                'user' => isUserAuth()
+                'user' => auth()->user()
             ],
             200
         );
