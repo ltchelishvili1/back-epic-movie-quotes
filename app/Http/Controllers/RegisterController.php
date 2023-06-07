@@ -22,7 +22,7 @@ class RegisterController extends Controller
             'password' => $validated['password']]
         );
 
-        event(new Registered($user));
+        // event(new Registered($user));
         return response()->json(['success' => 'Register successful'], 201);
     }
 }
