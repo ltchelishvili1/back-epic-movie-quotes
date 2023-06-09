@@ -32,7 +32,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVerify'])->name('verification.verify');
 
 Route::get('/user', [UserController::class, 'index'])->middleware('auth:sanctum')->name('user.index');
-Route::post('/update-profile', [UserController::class, 'update'])->middleware('auth:sanctum')->name('user.update');
+Route::patch('/user', [UserController::class, 'update'])->middleware('auth:sanctum')->name('user.update');
 
 
 Route::post('/forgot-password', [ResetPasswordController::class, 'resetPassword'])->name('password.reset');
