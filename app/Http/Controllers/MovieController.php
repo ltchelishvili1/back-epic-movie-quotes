@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
-use App\Models\Category;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,7 @@ class MovieController extends Controller
     public function index(Request $request)
     {
 
-        return response()->json(['movies' => Movie::with('categories')->get()]);
+        return response()->json(['movies' => Movie::all()]);
     }
 
     public function store(StoreMovieRequest $request)
@@ -29,6 +28,7 @@ class MovieController extends Controller
         }
 
 
+
         $movie = Movie::updateOrCreate([
             'director' => $validated['director'],
             'title' => $validated['title'],
@@ -38,19 +38,11 @@ class MovieController extends Controller
             'description' => $validated['description']
         ]);
 
-        $categories = explode(",", $validated['categories']);
+
+        $movie->genres()->attach(json_decode($validated['genres']));
 
 
-        foreach ($categories as $category) {
-            DB::table('category_movie')->insert([
-                'category_id' => $category,
-                'movie_id' => $movie->id
-            ]);
-        }
-
-
-
-        return response()->json($movie);
+        return response()->json(['movie' => $movie], 200);
     }
 
 

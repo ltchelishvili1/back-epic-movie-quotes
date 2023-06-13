@@ -16,18 +16,12 @@ class Movie extends Model
 
     protected $guarded = ['id'];
 
-    protected $fillable = [
-        'title',
-        'director',
-        'user_id',
-        'release_year',
-        'budget',
-        'description',
-        'image',
-        'updated_at',
-        'created_at'
-    ];
-
+    protected static function booted()
+    {
+        static::addGlobalScope('withGenres', function ($builder) {
+            $builder->with('genres');
+        });
+    }
 
 
     public function user(): BelongsTo
@@ -35,9 +29,9 @@ class Movie extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function categories(): BelongsToMany
+    public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Genre::class);
     }
 
 }

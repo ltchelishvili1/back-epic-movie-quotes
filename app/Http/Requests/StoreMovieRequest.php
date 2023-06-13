@@ -24,7 +24,7 @@ class StoreMovieRequest extends FormRequest
             'release_year' => 'required',
             'description_ka' => 'required|regex:/^[ა-ჰ.,!?\s]*$/',
             'description_en' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
-            'categories'=> 'required',
+            'genres'=> 'required',
             'image' => 'nullable|image'
         ];
 

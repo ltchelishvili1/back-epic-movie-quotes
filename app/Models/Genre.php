@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
-class Category extends Model
+class Genre extends Model
 {
     use HasFactory;
     use HasTranslations;
-    public $translatable = ['categories'];
+    public $translatable = ['name'];
 
 
     public function movies(): BelongsToMany
