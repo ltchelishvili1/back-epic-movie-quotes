@@ -33,7 +33,7 @@ class UserController extends Controller
 
             $path = $request->file('photo')->store('photo');
 
-            $user->thumbnail = $path;
+            $user->thumbnail = url('storage/' . $path);
 
             $user->save();
         }

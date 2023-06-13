@@ -29,8 +29,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'username',
         'email',
         'password',
-        'expiration_date',
-        'session_token',
         'google_id'
     ];
 
@@ -67,5 +65,10 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function PasswordHistories(): HasMany
     {
         return $this->hasMany(PasswordHistory::class);
+    }
+
+    public function Movies(): HasMany
+    {
+        return $this->hasMany(Movie::class);
     }
 }

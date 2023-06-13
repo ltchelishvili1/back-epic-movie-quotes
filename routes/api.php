@@ -2,9 +2,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
@@ -44,6 +46,12 @@ Route::post('/check-token', [ResetPasswordController::class, 'checkToken']);
 
 Route::get('/auth/google', [OAuthController::class, 'redirect'])->name('google.auth');
 Route::get('auth/google/call-back', [OauthController::class, 'callbackGoogle'])->name('google.auth');
+
+Route::post('/movies', [MovieController::class, 'store'])->middleware('auth:sanctum')->name('movie.store');
+Route::get('/movies', [MovieController::class, 'index'])->middleware('auth:sanctum')->name('movie.index');
+
+Route::get('/categories', [CategoryController::class, 'index'])->middleware('auth:sanctum')->name('category.index');
+
 
 
 Route::middleware('auth:sanctum')->group(
