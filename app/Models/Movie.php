@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
 class Movie extends Model
@@ -21,6 +22,10 @@ class Movie extends Model
         static::addGlobalScope('withGenres', function ($builder) {
             $builder->with('genres');
         });
+
+        static::addGlobalScope('withQuotes', function ($builder) {
+            $builder->with('quotes');
+        });
     }
 
 
@@ -32,6 +37,11 @@ class Movie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class);
+    }
+
+    public function quotes(): HasMany
+    {
+        return $this->hasMany(Quote::class);
     }
 
 }
