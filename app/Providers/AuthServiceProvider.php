@@ -4,17 +4,21 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Movie;
-use App\Policies\CrudPolicy;
+use App\Models\User;
+use App\Policies\MoviePolicy;
+use App\Policies\QuotePolicy;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
     protected $policies = [
-        Movie::class => CrudPolicy::class,
+        Movie::class => MoviePolicy::class,
+        Quote::class => QuotePolicy::class
     ];
 
     public function boot()
     {
-        $this->registerPolicies();
-
+        Gate::define('update-movie', [MoviePolicy::class, 'update']);
+        Gate::define('update-quote', [QuotePolicy::class, 'update']);
     }
 }

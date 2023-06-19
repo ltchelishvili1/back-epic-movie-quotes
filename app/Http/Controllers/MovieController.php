@@ -38,12 +38,11 @@ class MovieController extends Controller
 
     public function show(Movie $movie): JsonResponse
     {
-        $response = Gate::inspect('view', $movie);
 
-        if (!$response->allowed()) {
+        if (!Gate::allows('update-movie', $movie)) {
+
             return response()->json(['message' => 'Not Authorized'], 401);
         }
-
 
         return response()->json(['movie' => $movie], 200);
     }
@@ -51,6 +50,12 @@ class MovieController extends Controller
 
     public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
     {
+
+        if (!Gate::allows('update-movie', $movie)) {
+
+            return response()->json(['message' => 'Not Authorized'], 401);
+        }
+
         $validated = $request->validated();
 
         $validated['thumbnail'] = $movie->thumbnail;
@@ -75,12 +80,9 @@ class MovieController extends Controller
 
     public function destroy(Movie $movie): JsonResponse
     {
-        $response = Gate::inspect('view', $movie);
-
-        if (!$response->allowed()) {
+        if (!Gate::allows('update-movie', $movie)) {
 
             return response()->json(['message' => 'Not Authorized'], 401);
-
         }
 
         $movie->delete();

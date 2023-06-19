@@ -17,7 +17,7 @@ class StoreQuoteRequest extends FormRequest
             'quote_en' => 'required|regex:/^[a-zA-Z0-9\s]+$/|unique:quotes,quote->en',
             'quote_ka' => 'required|regex:/^[ა-ჰ.,!?\s]*$/|unique:quotes,quote->ka',
             'movie_id' => 'required|exists:movies,id',
-            'image' => 'required|image',
+            'image' => 'required|image|mimes:png,jpg|max:2048',
             'quote' => 'required',
             'user_id' => 'required'
         ];

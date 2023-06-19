@@ -30,13 +30,12 @@ class QuoteController extends Controller
     public function update(UpdateQuoteRequest $request, Quote $quote)
     {
 
-        $response = Gate::inspect('view', $quote);
-
-        if ($response->allowed()) {
+        if (!Gate::allows('update-quote', $quote)) {
             return response()->json(['message' => 'Not Authorized'], 401);
         }
 
         $validated = $request->validated();
+
         $validated['image'] = $quote->image;
         if ($request->hasFile('image')) {
 
@@ -50,13 +49,9 @@ class QuoteController extends Controller
 
     public function destroy(Request $request, Quote $quote)
     {
-        $response = Gate::inspect('view', $quote);
-
-        if (!$response->allowed()) {
-
+        if (!Gate::allows('update-quote', $quote)) {
             return response()->json(['message' => 'Not Authorized'], 401);
         }
-
 
         $quote->delete();
 

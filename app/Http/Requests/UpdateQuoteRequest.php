@@ -27,7 +27,7 @@ class UpdateQuoteRequest extends FormRequest
                 'regex:/^[ა-ჰ.,!?\s]*$/',
                 Rule::unique('quotes', 'quote->ka')->ignore($this->quote_id),
             ],
-            'image' => 'nullable',
+            'image' => 'nullable|image|mimes:png,jpg|max:2048',
             'quote_id' => 'required',
             'movie_id' => 'required',
         ];
