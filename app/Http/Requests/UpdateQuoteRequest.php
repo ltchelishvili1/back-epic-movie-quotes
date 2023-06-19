@@ -39,28 +39,17 @@ class UpdateQuoteRequest extends FormRequest
 
         $requestData = [
             'user_id' => auth()->user()->id,
-            'quote' => json_decode($this->quote, true),
+            'quote' => [
+                'en' => $this->quote_en ?? $quote->getTranslations('quote')['en'],
+                'ka' => $this->quote_ka ?? $quote->getTranslations('quote')['ka'],
+            ],
             'movie_id' => $quote->movie_id,
         ];
 
-        if ($this->quote_en !== null || $this->quote_ka !== null) {
-            $requestData['quote'] = [
-                'en' => $this->quote_en ?? $quote->getTranslations('quote')['en'],
-                'ka' => $this->quote_ka ?? $quote->getTranslations('quote')['ka'],
-            ];
-        }
 
         $this->merge($requestData);
     }
 
 
-    public function messages(): array
-    {
-        return [
-            'title_en.unique' => 'Movie already exists',
-            'title_ka.unique' => 'Movie already exists',
-        ];
-
-    }
 
 }

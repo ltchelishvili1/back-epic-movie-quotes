@@ -25,7 +25,8 @@ class StoreMovieRequest extends FormRequest
             'description_ka' => 'required|regex:/^[ა-ჰ.,!?\s]*$/',
             'description_en' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
             'genres'=> 'required',
-            'image' => 'required|image'
+            'thumbnail' => 'required|image',
+            'user_id' => 'required'
         ];
 
     }
@@ -33,6 +34,7 @@ class StoreMovieRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'user_id' => 1,
             'title' => [
                 'en' => $this->title_en,
                 'ka' => $this->title_ka,
@@ -45,8 +47,9 @@ class StoreMovieRequest extends FormRequest
                 'en' => $this->description_en,
                 'ka' => $this->description_ka,
             ],
-            'user_id' => auth()->user()->id,
+
         ]);
+
     }
 
     public function messages(): array

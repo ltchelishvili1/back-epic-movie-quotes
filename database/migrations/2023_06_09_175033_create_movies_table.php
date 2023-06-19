@@ -17,7 +17,7 @@ return new class () extends Migration {
             $table->foreignId('user_id')->constrained();
             $table->integer('release_year')->nullable();
             $table->json('description')->nullable();
-            $table->string('image')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

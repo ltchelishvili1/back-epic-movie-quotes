@@ -54,21 +54,21 @@ Route::middleware('auth:sanctum')->group(
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
         Route::controller(MovieController::class)->group(function () {
-            Route::post('/movies', 'store')->name('movie.store');
-            Route::get('/movies', 'index')->name('movie.index');
-            Route::get('/movies/{movie}', 'choose')->name('movie.index');
-            Route::delete('/movies/{movie}', 'destroy')->name('movie.destroy');
-            Route::patch('/movies/{movie}', 'update')->name('movie.update');
+            Route::post('/movies', 'store')->name('movies.store');
+            Route::get('/movies', 'index')->name('movies.index');
+            Route::get('/movies/{movie}', 'show')->name('movies.show');
+            Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
+            Route::patch('/movies/{movie}', 'update')->name('movies.update');
         });
 
 
         Route::controller(QuoteController::class)->group(function () {
-            Route::post('/quotes', 'store')->name('quote.store');
-            Route::patch('/quotes/{quote}', 'update')->name('quote.update');
-            Route::delete('/quotes/{quote}', 'destroy')->name('quote.deleye');
+            Route::post('/quotes', 'store')->name('quotes.store');
+            Route::patch('/quotes/{quote}', 'update')->name('quotes.update');
+            Route::delete('/quotes/{quote}', 'destroy')->name('quotes.destroy');
         });
 
-        Route::get('/genres', [GenreController::class, 'index'])->name('genre.index');
+        Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
 
         Route::controller(UserController::class)->group(function () {
             Route::get('/user', 'index')->name('user.index');
