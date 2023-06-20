@@ -7,6 +7,7 @@ use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
@@ -53,11 +54,21 @@ Route::middleware('auth:sanctum')->group(
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
         Route::controller(MovieController::class)->group(function () {
-            Route::post('/movies', 'store')->name('movie.store');
-            Route::get('/movies', 'index')->name('movie.index');
+            Route::post('/movies', 'store')->name('movies.store');
+            Route::get('/movies', 'index')->name('movies.index');
+            Route::get('/movies/{movie}', 'show')->middleware('can:update-movie,movie')->name('movies.show');
+            Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
+            Route::patch('/movies/{movie}', 'update')->middleware('can:update-movie,movie')->name('movies.update');
         });
 
-        Route::get('/genres', [GenreController::class, 'index'])->name('genre.index');
+
+        Route::controller(QuoteController::class)->group(function () {
+            Route::post('/quotes', 'store')->name('quotes.store');
+            Route::patch('/quotes/{quote}', 'update')->middleware('can:update-quote,quote')->name('quotes.update');
+            Route::delete('/quotes/{quote}', 'destroy')->middleware('can:update-quote,quote')->name('quotes.destroy');
+        });
+
+        Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
 
         Route::controller(UserController::class)->group(function () {
             Route::get('/user', 'index')->name('user.index');

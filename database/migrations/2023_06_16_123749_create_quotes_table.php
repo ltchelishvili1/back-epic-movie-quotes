@@ -10,22 +10,21 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('movies', function (Blueprint $table) {
+        Schema::create('quotes', function (Blueprint $table) {
             $table->id();
-            $table->json('title')->nullable();
-            $table->json('director')->nullable();
+            $table->foreignId('movie_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained();
-            $table->integer('release_year')->nullable();
-            $table->json('description')->nullable();
-            $table->string('thumbnail')->nullable();
+            $table->string('image')->nullable();
+            $table->json('quote')->nullable();
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('movies');
+        Schema::dropIfExists('quotes');
     }
 };
