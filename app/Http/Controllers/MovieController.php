@@ -38,23 +38,12 @@ class MovieController extends Controller
 
     public function show(Movie $movie): JsonResponse
     {
-
-        if (!Gate::allows('update-movie', $movie)) {
-
-            return response()->json(['message' => 'Not Authorized'], 401);
-        }
-
         return response()->json(['movie' => $movie], 200);
     }
 
 
     public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
     {
-
-        if (!Gate::allows('update-movie', $movie)) {
-
-            return response()->json(['message' => 'Not Authorized'], 401);
-        }
 
         $validated = $request->validated();
 

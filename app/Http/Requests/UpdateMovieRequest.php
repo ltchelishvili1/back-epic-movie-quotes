@@ -47,16 +47,16 @@ class UpdateMovieRequest extends FormRequest
         $requestData = [
             'user_id' => auth()->user()->id,
             'director' => [
-                'en' => $this->director_en ?? $movie->getTranslations('director')['en'],
-                'ka' => $this->director_ka ?? $movie->getTranslations('director')['ka'],
+                'en' => $this->director_en,
+                'ka' => $this->director_ka
             ],
             'description' => [
-                'en' => $this->description_en ?? $movie->getTranslations('description')['en'],
-                'ka' => $this->description_ka ?? $movie->getTranslations('description')['ka'],
+                'en' => $this->description_en,
+                'ka' => $this->description_ka
             ],
             'title' => [
-                'en' => $this->title_en ?? $movie->getTranslations('title')['en'],
-                'ka' => $this->title_ka ?? $movie->getTranslations('title')['ka'],
+                'en' => $this->title_en,
+                'ka' => $this->title_ka
             ],
         ];
 

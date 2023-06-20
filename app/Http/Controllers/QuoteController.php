@@ -29,11 +29,6 @@ class QuoteController extends Controller
 
     public function update(UpdateQuoteRequest $request, Quote $quote)
     {
-
-        if (!Gate::allows('update-quote', $quote)) {
-            return response()->json(['message' => 'Not Authorized'], 401);
-        }
-
         $validated = $request->validated();
 
         $validated['image'] = $quote->image;
@@ -49,10 +44,6 @@ class QuoteController extends Controller
 
     public function destroy(Request $request, Quote $quote)
     {
-        if (!Gate::allows('update-quote', $quote)) {
-            return response()->json(['message' => 'Not Authorized'], 401);
-        }
-
         $quote->delete();
 
         return response()->json(['message' => 'Movie deleted succesfully'], 200);

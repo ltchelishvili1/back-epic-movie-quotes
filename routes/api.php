@@ -56,16 +56,16 @@ Route::middleware('auth:sanctum')->group(
         Route::controller(MovieController::class)->group(function () {
             Route::post('/movies', 'store')->name('movies.store');
             Route::get('/movies', 'index')->name('movies.index');
-            Route::get('/movies/{movie}', 'show')->name('movies.show');
+            Route::get('/movies/{movie}', 'show')->middleware('can:update-movie,movie')->name('movies.show');
             Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
-            Route::patch('/movies/{movie}', 'update')->name('movies.update');
+            Route::patch('/movies/{movie}', 'update')->middleware('can:update-movie,movie')->name('movies.update');
         });
 
 
         Route::controller(QuoteController::class)->group(function () {
             Route::post('/quotes', 'store')->name('quotes.store');
-            Route::patch('/quotes/{quote}', 'update')->name('quotes.update');
-            Route::delete('/quotes/{quote}', 'destroy')->name('quotes.destroy');
+            Route::patch('/quotes/{quote}', 'update')->middleware('can:update-quote,quote')->name('quotes.update');
+            Route::delete('/quotes/{quote}', 'destroy')->middleware('can:update-quote,quote')->name('quotes.destroy');
         });
 
         Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');

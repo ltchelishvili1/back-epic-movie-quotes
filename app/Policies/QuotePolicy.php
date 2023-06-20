@@ -8,9 +8,10 @@ use Illuminate\Auth\Access\Response;
 
 class QuotePolicy
 {
-    public function update(User $user, Quote $quote): bool
+    public function update(User $user, Quote $quote)
     {
-        return $user->id === $quote->user_id;
+        return $user->id === $quote->user_id ? Response::allow()
+        : Response::deny('Not Authorized.');
     }
 
 }

@@ -27,7 +27,7 @@ class UpdateQuoteRequest extends FormRequest
                 'regex:/^[ა-ჰ.,!?\s]*$/',
                 Rule::unique('quotes', 'quote->ka')->ignore($this->quote_id),
             ],
-            'image' => 'nullable|image|mimes:png,jpg|max:2048',
+            'image' => 'nullable',
             'quote_id' => 'required',
             'movie_id' => 'required',
         ];
@@ -35,15 +35,13 @@ class UpdateQuoteRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $quote = Quote::find($this->quote_id);
-
         $requestData = [
             'user_id' => auth()->user()->id,
             'quote' => [
-                'en' => $this->quote_en ?? $quote->getTranslations('quote')['en'],
-                'ka' => $this->quote_ka ?? $quote->getTranslations('quote')['ka'],
+                'en' => $this->quote_en,
+                'ka' => $this->quote_ka
             ],
-            'movie_id' => $quote->movie_id,
+            'movie_id' => $this->movie_id
         ];
 
 
