@@ -71,4 +71,12 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         return $this->hasMany(Movie::class);
     }
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

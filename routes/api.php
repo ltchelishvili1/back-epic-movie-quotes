@@ -2,10 +2,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\EmailVerifyController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\RegisterController;
@@ -63,9 +65,12 @@ Route::middleware('auth:sanctum')->group(
 
 
         Route::controller(QuoteController::class)->group(function () {
+            Route::get('/quotes', 'index')->name('quote.index');
             Route::post('/quotes', 'store')->name('quotes.store');
             Route::patch('/quotes/{quote}', 'update')->middleware('can:update-quote,quote')->name('quotes.update');
             Route::delete('/quotes/{quote}', 'destroy')->middleware('can:update-quote,quote')->name('quotes.destroy');
+            Route::get('/quotes/{quote}', 'choose')->name('quote.choose');
+            Route::get('quotes-search', 'search')->name('quote.search');
         });
 
         Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
@@ -75,6 +80,15 @@ Route::middleware('auth:sanctum')->group(
             Route::patch('/user', 'update')->name('user.update');
         });
 
+        Route::controller(LikeController::class)->group(function () {
+            Route::post('/likes', 'store')->name('like.store');
+            Route::delete('/likes/{like}', 'destroy')->name('like.destroy');
+        });
+
+        Route::controller(CommentController::class)->group(function () {
+            Route::post('/comments', 'store')->name('comment.store');
+            Route::delete('/comments/{comment}', 'destroy')->name('comment.destroy');
+        });
 
     }
 );
