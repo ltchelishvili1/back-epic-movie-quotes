@@ -12,7 +12,7 @@ class CommentController extends Controller
     {
         $comment = Comment::create($request->validated());
 
-        return response()->json($comment);
+        return response()->json(['comment' => $comment], 201);
     }
 
     public function destroy(Comment $comment)

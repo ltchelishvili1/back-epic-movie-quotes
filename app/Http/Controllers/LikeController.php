@@ -12,7 +12,7 @@ class LikeController extends Controller
     {
         $like = Like::updateOrCreate($request->validated());
 
-        return response()->json($like);
+        return response()->json(['like' => $like], 201);
     }
 
     public function destroy(Like $like)

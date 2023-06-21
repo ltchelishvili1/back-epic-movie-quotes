@@ -70,7 +70,6 @@ Route::middleware('auth:sanctum')->group(
             Route::patch('/quotes/{quote}', 'update')->middleware('can:update-quote,quote')->name('quotes.update');
             Route::delete('/quotes/{quote}', 'destroy')->middleware('can:update-quote,quote')->name('quotes.destroy');
             Route::get('/quotes/{quote}', 'show')->middleware('can:update-quote,quote')->name('quote.show');
-            Route::get('quotes-search', 'search')->name('quote.search');
         });
 
         Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
