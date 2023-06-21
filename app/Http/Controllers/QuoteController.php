@@ -13,7 +13,6 @@ use App\Models\Quote;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class QuoteController extends Controller
 {
@@ -39,11 +38,8 @@ class QuoteController extends Controller
         return response()->json(['quote' => $quote], 201);
     }
 
-    public function choose(Quote $quote): JsonResponse
+    public function show(Quote $quote): JsonResponse
     {
-        if ($quote->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Not Authorized'], 401);
-        }
 
         return response()->json(['quote' => $quote], 200);
     }
@@ -115,6 +111,7 @@ class QuoteController extends Controller
     public function destroy(Request $request, Quote $quote)
     {
         $quote->delete();
+
         return response()->json(['message' => 'Movie deleted succesfully'], 200);
 
     }

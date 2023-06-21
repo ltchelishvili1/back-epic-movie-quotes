@@ -69,7 +69,7 @@ Route::middleware('auth:sanctum')->group(
             Route::post('/quotes', 'store')->name('quotes.store');
             Route::patch('/quotes/{quote}', 'update')->middleware('can:update-quote,quote')->name('quotes.update');
             Route::delete('/quotes/{quote}', 'destroy')->middleware('can:update-quote,quote')->name('quotes.destroy');
-            Route::get('/quotes/{quote}', 'choose')->name('quote.choose');
+            Route::get('/quotes/{quote}', 'show')->middleware('can:update-quote,quote')->name('quote.show');
             Route::get('quotes-search', 'search')->name('quote.search');
         });
 
@@ -82,12 +82,12 @@ Route::middleware('auth:sanctum')->group(
 
         Route::controller(LikeController::class)->group(function () {
             Route::post('/likes', 'store')->name('like.store');
-            Route::delete('/likes/{like}', 'destroy')->name('like.destroy');
+            Route::delete('/likes/{like}', 'destroy')->middleware('can:delete-like,like')->name('like.destroy');
         });
 
         Route::controller(CommentController::class)->group(function () {
             Route::post('/comments', 'store')->name('comment.store');
-            Route::delete('/comments/{comment}', 'destroy')->name('comment.destroy');
+            Route::delete('/comments/{comment}', 'destroy')->middleware('can:delete-comment,comment')->name('comment.destroy');
         });
 
     }
