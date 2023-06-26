@@ -9,7 +9,6 @@ use App\Http\Resources\QuoteCardResource;
 use App\Http\Resources\QuoteResource;
 use App\Models\Movie;
 use App\Models\Quote;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -29,16 +28,6 @@ class QuoteController extends Controller
             return response()->json(['quotes' => QuoteCardResource::collection($quotes)], 200);
 
         }
-
-
-        if (isset($searchKey) && (trim($searchKey)[0] === '@')) {
-            $movies = Movie::search($searchKey)
-                ->orderByDesc('id')
-                ->simplePaginate(6);
-
-            return response()->json(['movies' => MovieResource::collection($movies)], 200);
-        }
-
         return response()->json(['posts' => QuoteResource::collection($quotes)]);
 
     }

@@ -46,7 +46,7 @@ Route::controller(ResetPasswordController::class)->group(function () {
 
 Route::controller(OAuthController::class)->group(function () {
     Route::get('/auth/google', 'redirect')->name('google.auth');
-    Route::get('auth/google/call-back', 'callbackGoogle')->name('google.auth');
+    Route::get('auth/google/call-back', 'callbackGoogle')->name('google.callback');
 
 });
 
@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(
             Route::post('/movies', 'store')->name('movies.store');
             Route::get('/movies', 'index')->name('movies.index');
             Route::get('/movies/{movie}', 'show')->middleware('can:update-movie,movie')->name('movies.show');
-            Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
+            Route::delete('/movies/{movie}', 'destroy')->middleware('can:update-movie,movie')->name('movies.destroy');
             Route::patch('/movies/{movie}', 'update')->middleware('can:update-movie,movie')->name('movies.update');
         });
 
@@ -88,6 +88,8 @@ Route::middleware('auth:sanctum')->group(
             Route::post('/comments', 'store')->name('comment.store');
             Route::delete('/comments/{comment}', 'destroy')->middleware('can:delete-comment,comment')->name('comment.destroy');
         });
+
+
 
     }
 );

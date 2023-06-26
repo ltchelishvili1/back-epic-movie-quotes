@@ -24,7 +24,7 @@ class Movie extends Model
         });
 
         static::addGlobalScope('withQuotes', function ($builder) {
-            $builder->with('quotes');
+            $builder->with('quotes.comments');
         });
     }
 
