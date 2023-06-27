@@ -2,21 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserFeedBack;
+use App\Events\UserLiked;
+use App\Events\UserUnLiked;
 use App\Http\Requests\StoreLikeRequest;
+use App\Http\Resources\NotificationResource;
 use App\Models\Like;
+use App\Models\Notification;
+use App\Models\Quote;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
     public function store(StoreLikeRequest $request)
     {
-        $like = Like::updateOrCreate($request->validated());
+
+        $validated = $request->validated();
+
+        $like = Like::updateOrCreate($validated);
+
+        $notification = Notification::create([
+            'user_id' => auth()->user()->id,
+            'author_id' => Quote::find($validated['quote_id'])->user_id,
+            'has_user_seen' => false,
+            'type' => 'like'
+        ]);
+
+        event(new UserLiked($like));
+
+        $payload = (object)[
+            'to' =>  $notification->author_id,
+            'from' => auth('sanctum')->user()->username,
+            'notification' =>  new NotificationResource($notification)
+        ];
+
+        event(new UserFeedBack($payload));
+
 
         return response()->json(['like' => $like], 201);
     }
 
     public function destroy(Like $like)
     {
+
+
+        event(new UserUnLiked(['unlike' => $like]));
 
         $like->delete();
 
