@@ -24,7 +24,7 @@ class Movie extends Model
         });
 
         static::addGlobalScope('withQuotes', function ($builder) {
-            $builder->with('quotes');
+            $builder->with('quotes.comments');
         });
     }
 
@@ -44,4 +44,16 @@ class Movie extends Model
         return $this->hasMany(Quote::class);
     }
 
+    public function scopeSearch($query, $searchKey)
+    {
+
+        if (isset($searchKey) && trim($searchKey)[0] === '@') {
+            $search = ltrim($searchKey, $searchKey[0]);
+            $query->where('title->en', 'like', '%' . $search . '%')
+                ->orWhere('title->ka', 'like', '%' . $search . '%');
+        }
+
+
+
+    }
 }

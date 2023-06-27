@@ -4,17 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class MovieController extends Controller
 {
     public function index(Request $request)
     {
+        if(isset($request['searchKey'])) {
 
-        return response()->json(['movies' => Movie::where('user_id', auth()->id())->get()]);
+            $movies = Movie::search($request['searchKey'])
+            ->orderByDesc('id')
+            ->simplePaginate(6);
+
+            return response()->json(['movies' => MovieResource::collection($movies)], 200);
+
+        }
+
+        return response()->json(['movies' =>  MovieResource::collection(Movie::where('user_id', auth()->id())->get())]);
     }
 
     public function store(StoreMovieRequest $request)
@@ -69,11 +78,6 @@ class MovieController extends Controller
 
     public function destroy(Movie $movie): JsonResponse
     {
-        if (!Gate::allows('update-movie', $movie)) {
-
-            return response()->json(['message' => 'Not Authorized'], 401);
-        }
-
         $movie->delete();
 
         return response()->json(['message' => 'Movie deleted succesfully'], 200);

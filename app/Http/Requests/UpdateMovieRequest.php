@@ -42,7 +42,6 @@ class UpdateMovieRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $movie = Movie::find($this->id);
 
         $requestData = [
             'user_id' => auth()->user()->id,
