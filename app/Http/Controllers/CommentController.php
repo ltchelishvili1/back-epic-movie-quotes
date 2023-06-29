@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Events\UserFeedBack;
 use App\Events\UserLiked;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\NotificationResource;
 use App\Models\Comment;
 use App\Models\Notification;
-use App\Models\Quote;
-use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
@@ -19,16 +18,9 @@ class CommentController extends Controller
 
         $comment = Comment::create($validated);
 
-        $notification = Notification::create([
-            'user_id' => auth()->user()->id,
-            'author_id' => Quote::find($validated['quote_id'])->user_id,
-            'has_user_seen' => false,
-            'type' => 'comment'
-        ]);
+        $notification = Notification::create($validated);
 
-
-        event(new UserLiked(['comment' => $comment]));
-
+        event(new UserLiked(['comment' => new CommentResource($comment)]));
 
         $payload = (object)[
             'to' =>  $notification->author_id,
@@ -37,7 +29,6 @@ class CommentController extends Controller
         ];
 
         event(new UserFeedBack($payload));
-
 
         return response()->json(['comment' => $comment], 201);
     }

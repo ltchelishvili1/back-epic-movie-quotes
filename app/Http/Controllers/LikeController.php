@@ -9,8 +9,6 @@ use App\Http\Requests\StoreLikeRequest;
 use App\Http\Resources\NotificationResource;
 use App\Models\Like;
 use App\Models\Notification;
-use App\Models\Quote;
-use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
@@ -19,14 +17,9 @@ class LikeController extends Controller
 
         $validated = $request->validated();
 
-        $like = Like::updateOrCreate($validated);
+        $like = Like::create($validated);
 
-        $notification = Notification::create([
-            'user_id' => auth()->user()->id,
-            'author_id' => Quote::find($validated['quote_id'])->user_id,
-            'has_user_seen' => false,
-            'type' => 'like'
-        ]);
+        $notification = Notification::create($validated);
 
         event(new UserLiked($like));
 
@@ -44,7 +37,6 @@ class LikeController extends Controller
 
     public function destroy(Like $like)
     {
-
 
         event(new UserUnLiked(['unlike' => $like]));
 

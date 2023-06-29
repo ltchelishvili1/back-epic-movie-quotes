@@ -34,7 +34,7 @@ class StoreMovieRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'user_id' => 1,
+            'user_id' => auth()->user()->id,
             'title' => [
                 'en' => $this->title_en,
                 'ka' => $this->title_ka,

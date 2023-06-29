@@ -10,7 +10,12 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $guarded =['id'];
+    protected $guarded = ['id'];
+
+    protected $attributes = [
+
+        'has_user_seen' => false,
+    ];
 
     public function user(): BelongsTo
     {
