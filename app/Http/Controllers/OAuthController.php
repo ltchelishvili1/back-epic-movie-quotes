@@ -19,15 +19,17 @@ class OAuthController extends Controller
         try {
             $google_user= Socialite::driver('google')->stateless()->user();
 
+            $user = User::firstOrCreate(
+                ['email' => $google_user->getEmail()],
+                [
+                    'google_id' => $google_user->getId(),
+                    'username' => $google_user->getName()
+                ]
+            );
 
-            $user = User::updateOrCreate([
-                'username' => $google_user->getName(),
-                'email' => $google_user->getEmail(),
-                'google_id' => $google_user->getId()
-            ]);
 
             Auth::login($user);
-            return redirect(env('FRONT_END_BASE_URL') . '/landing');
+            return redirect(env('FRONT_END_BASE_URL') . '/news-feed');
 
         } catch(\Throwable $th) {
             return response()->json(['errors' => [__('validation.something_went_wrong')]], 400);

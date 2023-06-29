@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CommentResource extends JsonResource
+class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,12 @@ class CommentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'quote_id' => $this->quote_id,
+            'has_user_seen' => $this->has_user_seen,
+            'created_at' => $this->created_at,
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'comment' => $this->comment,
-            'user' => User::find($this->user_id)
+            'notification_sender' => User::find($this->user_id),
+            'type' => $this->type
+
         ];
     }
 }

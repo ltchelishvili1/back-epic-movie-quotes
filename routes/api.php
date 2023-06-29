@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AuthController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
@@ -90,6 +90,12 @@ Route::middleware('auth:sanctum')->group(
         });
 
 
+
+
+        Route::controller(NotificationController::class)->group(function () {
+            Route::get('notifications', 'index')->name('notiification.index');
+            Route::patch('notifications', 'update')->name('notiification.update');
+        });
 
     }
 );

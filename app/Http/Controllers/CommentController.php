@@ -2,15 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserFeedBack;
+use App\Events\UserLiked;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
+use App\Http\Resources\NotificationResource;
 use App\Models\Comment;
-use Illuminate\Http\Request;
+use App\Models\Notification;
 
 class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request)
     {
-        $comment = Comment::create($request->validated());
+        $validated =$request->validated();
+
+        $comment = Comment::create($validated);
+
+        $notification = Notification::create($validated);
+
+        event(new UserLiked(['comment' => new CommentResource($comment)]));
+
+        $payload = (object)[
+            'to' =>  $notification->author_id,
+            'from' => auth('sanctum')->user()->username,
+            'notification' => new NotificationResource($notification)
+        ];
+
+        event(new UserFeedBack($payload));
 
         return response()->json(['comment' => $comment], 201);
     }

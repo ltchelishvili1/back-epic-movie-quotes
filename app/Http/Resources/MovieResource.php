@@ -18,8 +18,10 @@ class MovieResource extends JsonResource
             'thumbnail' => $this->thumbnail,
             'id' => $this->id,
             'title' => $this->getTranslations('title'),
+            'description' => $this->getTranslations('description'),
+            'director' => $this->getTranslations('director'),
             'release_year' => $this->release_year,
-            'quotes' => $this->quotes
+            'quotes' => QuoteResource::collection($this->whenLoaded('quotes'))
         ];
     }
 }

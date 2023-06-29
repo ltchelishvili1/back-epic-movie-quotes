@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Quote;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLikeRequest extends FormRequest
@@ -16,6 +17,8 @@ class StoreLikeRequest extends FormRequest
         return [
             'quote_id' => 'required',
             'user_id' => 'required',
+            'author_id' => 'required',
+            'type' => 'required'
         ];
     }
     public function prepareForValidation()
@@ -23,6 +26,8 @@ class StoreLikeRequest extends FormRequest
         $requestData = [
             'user_id' => auth()->user()->id,
             'quote_id' => $this->quote_id,
+            'type' => 'like',
+            'author_id' => Quote::find($this->quote_id)->user_id,
         ];
         $this->merge($requestData);
     }

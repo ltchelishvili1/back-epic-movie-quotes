@@ -29,6 +29,9 @@ class UserController extends Controller
 
         $user->update($validated);
 
+
+        event(new Registered($user));
+
         if ($request->hasFile('photo')) {
 
             $path = $request->file('photo')->store('photo');
@@ -38,11 +41,8 @@ class UserController extends Controller
             $user->save();
         }
 
-        if(isset($validated['email'])) {
 
-            event(new Registered($user));
 
-        }
 
         return response()->json($user);
     }
