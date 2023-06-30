@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
-use App\Http\Resources\MovieResource;
 use App\Http\Resources\QuoteCardResource;
 use App\Http\Resources\QuoteResource;
-use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -62,6 +60,7 @@ class QuoteController extends Controller
         $validated = $request->validated();
 
         $validated['image'] = $quote->image;
+
         if ($request->hasFile('image')) {
 
             $path = $request->file('image')->store('movie-image');
@@ -78,7 +77,8 @@ class QuoteController extends Controller
     public function destroy(Request $request, Quote $quote)
     {
         $quote->delete();
-        return response()->json(['message' => 'Quote deleted succesfully'], 200);
+
+        return response()->json(['message' => __('validation.quote_deleted_successfully')], 200);
 
     }
 

@@ -13,6 +13,7 @@ return new class () extends Migration {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('quote_id')->constrained();
             $table->unsignedBigInteger('author_id')->constrained()->cascadeOnDelete();
             $table->string('type');
             $table->boolean('has_user_seen')->nullable();

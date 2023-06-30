@@ -80,7 +80,7 @@ class MovieController extends Controller
     {
         $movie->delete();
 
-        return response()->json(['message' => 'Movie deleted succesfully'], 200);
+        return response()->json(['message' => __('validation.movie_deleted_successfully')], 200);
     }
 
 

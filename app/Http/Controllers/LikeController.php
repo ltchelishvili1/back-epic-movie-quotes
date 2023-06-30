@@ -9,6 +9,7 @@ use App\Http\Requests\StoreLikeRequest;
 use App\Http\Resources\NotificationResource;
 use App\Models\Like;
 use App\Models\Notification;
+use App\Models\Quote;
 
 class LikeController extends Controller
 {
@@ -18,6 +19,10 @@ class LikeController extends Controller
         $validated = $request->validated();
 
         $like = Like::create($validated);
+
+        $quote = Quote::find($validated['quote_id']);
+
+        $quote->likes()->attach($like);
 
         $notification = Notification::create($validated);
 
@@ -42,7 +47,7 @@ class LikeController extends Controller
 
         $like->delete();
 
-        return response()->json(['message' => 'like deleted succesfully', 200]);
+        return response()->json(['message' => __('validation.like_deleted_successfully'), 200]);
     }
 
 

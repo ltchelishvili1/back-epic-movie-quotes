@@ -33,8 +33,8 @@ Route::get('/email/verify/{id}/{hash}', [EmailVerifyController::class, 'emailVer
 Route::get('set-language/{language}', [LanguageController::class, 'setLanguage'])->name('set-language');
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post('/login', 'login')->name('auth.login');
-    Route::get('/logout', 'logout')->name('auth.logout');
+    Route::post('/login', 'login')->middleware('ensure.email.verified')->name('auth.login');
+
 });
 
 
@@ -53,7 +53,7 @@ Route::controller(OAuthController::class)->group(function () {
 
 Route::middleware('auth:sanctum')->group(
     function () {
-        Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::get('/logout', [AuthController::class, 'logut'])->name('auth.logout');
 
         Route::controller(MovieController::class)->group(function () {
             Route::post('/movies', 'store')->name('movies.store');
@@ -77,6 +77,7 @@ Route::middleware('auth:sanctum')->group(
         Route::controller(UserController::class)->group(function () {
             Route::get('/user', 'index')->name('user.index');
             Route::patch('/user', 'update')->name('user.update');
+            Route::patch('/user-email-update', 'updateEmail')->name('user.update-email');
         });
 
         Route::controller(LikeController::class)->group(function () {
