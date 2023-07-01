@@ -27,7 +27,7 @@ class Quote extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function likes()
+    public function likes(): BelongsToMany
     {
         return $this->belongsToMany(Like::class);
     }
