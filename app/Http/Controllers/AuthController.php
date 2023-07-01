@@ -30,14 +30,15 @@ class AuthController extends Controller
             return response()->json(['errors' => ['password' => [__('validation.invalid_credentials')]]], 404);
         }
 
-
     }
-
-
 
     public function logut(): JsonResponse
     {
         auth()->user()->logout;
+
+        request()->session()->invalidate();
+
+        request()->session()->regenerateToken();
 
         return response()->json(['message' => 'Logged out'])->withCookie(cookie()->forget('XSRF-TOKEN'));
 

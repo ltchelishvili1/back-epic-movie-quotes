@@ -81,7 +81,7 @@
     <h1>{{__('validation.movie_quotes')}}</h1>
 
     <p .class="hi">{{__('validation.hello')}} {{ucwords($name)}}</p>
-    <p>{{{{__('validation.thanks_for_joining')}}}}
+    <p>{{__('validation.thanks_for_joining')}}
     </p>
     <a href="{{$url}}">
         <button>
