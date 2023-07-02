@@ -16,7 +16,8 @@ class EmailVerify
     public function handle($request, Closure $next)
     {
         if (!$request->user() || !$request->user()->hasVerifiedEmail()) {
-            return response()->json(['error' => 'Email verification required'], 403);
+
+            return response()->json(['error' => __('validation.email_verification_required')], 403);
         }
         return $next($request);
     }

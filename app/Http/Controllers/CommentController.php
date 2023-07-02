@@ -37,6 +37,6 @@ class CommentController extends Controller
     {
         $comment->delete();
 
-        return response()->json(['message' => 'comment deleted succesfully', 200]);
+        return response()->json(['message' => __('validation.comment_deleted_successfully'), 200]);
     }
 }

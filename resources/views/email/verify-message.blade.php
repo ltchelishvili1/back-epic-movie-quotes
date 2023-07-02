@@ -78,19 +78,19 @@
 
 <body id=body>
     <img src="https://i.postimg.cc/8JL0bT3L/Vector.png" class="dialog" alt="dialog">
-    <h1>MOVIE QUOTES</h1>
+    <h1>{{__('validation.movie_quotes')}}</h1>
 
-    <p .class="hi">Hello {{ucwords($name)}}</p>
-    <p>Thanks for joining Movie quotes! We really appreciate it. Please click the button below to verify your account:
+    <p .class="hi">{{__('validation.hello')}} {{ucwords($name)}}</p>
+    <p>{{__('validation.thanks_for_joining')}}
     </p>
     <a href="{{$url}}">
         <button>
-            verify email
+            {{__('validation.verify_email')}}
         </button></a>
-    <p>If clicking doesn't work, you can try copying and pasting it to your browser:</p>
+    <p>{{__('validation.if_click_fails')}}</p>
     <p class="url">{{$url}}</p>
-    <p class="problem">If you have any problems, please contact us: support@moviequotes.ge</p>
-    <p class="crew">MovieQuotes Crew</p>
+    <p class="problem">{{__('validation.have_any_problems')}}</p>
+    <p class="crew">{{__('validation.moviequotes_crew')}}</p>
 </body>
 
 </html>

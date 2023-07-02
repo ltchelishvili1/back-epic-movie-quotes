@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Models\Like;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Movie;
-use App\Models\User;
 use App\Policies\CommentPolicy;
 use App\Policies\LikePolicy;
 use App\Policies\MoviePolicy;
@@ -19,7 +18,8 @@ class AuthServiceProvider extends ServiceProvider
         Movie::class => MoviePolicy::class,
         Quote::class => QuotePolicy::class,
         Comment::class => CommentPolicy::class,
-        Like::class => LikePolicy::class
+        Like::class => LikePolicy::class,
+
     ];
 
     public function boot()

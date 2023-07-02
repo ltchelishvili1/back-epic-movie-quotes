@@ -13,12 +13,15 @@ class Notification extends Model
     protected $guarded = ['id'];
 
     protected $attributes = [
-
         'has_user_seen' => false,
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function quote(): BelongsTo
+    {
+        return $this->belongsTo(Quote::class);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -14,7 +15,7 @@ class UserController extends Controller
 
         return response()->json(
             [
-                'message' => 'authenticated successfully',
+                'message' => __('validation.auth_successfully'),
                 'user' => auth()->user()
             ],
             200
@@ -29,9 +30,6 @@ class UserController extends Controller
 
         $user->update($validated);
 
-
-        event(new Registered($user));
-
         if ($request->hasFile('photo')) {
 
             $path = $request->file('photo')->store('photo');
@@ -41,9 +39,24 @@ class UserController extends Controller
             $user->save();
         }
 
-
-
-
         return response()->json($user);
     }
+
+
+
+    public function updateEmail(Request $request): JsonResponse
+    {
+
+        $user = User::find(auth()->id());
+
+        $user->email_verified_at = null;
+
+        $user->email = $request->email;
+
+        event(new Registered($user));
+
+        return response()->json($request->email);
+    }
+
+
 }

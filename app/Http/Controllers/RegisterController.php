@@ -13,6 +13,7 @@ class RegisterController extends Controller
     {
 
         $validated = $request->validated();
+
         $user = User::create(
             [
             'username' => $validated['username'],
@@ -21,6 +22,7 @@ class RegisterController extends Controller
         );
 
         event(new Registered($user));
-        return response()->json(['success' => 'Register successful'], 201);
+
+        return response()->json(['success' => __('validation.registered_successfully')], 201);
     }
 }

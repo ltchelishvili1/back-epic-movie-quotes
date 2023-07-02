@@ -2,8 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\JwtAuth;
-
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -49,6 +47,7 @@ class Kernel extends HttpKernel
             // 'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\Language::class,
+
         ],
     ];
 
@@ -70,6 +69,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'ensure.email.verified' => \App\Http\Middleware\EnsureEmailVerified::class,
+
 
     ];
 }
