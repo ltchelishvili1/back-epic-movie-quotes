@@ -10,6 +10,7 @@ use App\Http\Resources\NotificationResource;
 use App\Models\Like;
 use App\Models\Notification;
 use App\Models\Quote;
+use App\Models\User;
 
 class LikeController extends Controller
 {
@@ -24,17 +25,25 @@ class LikeController extends Controller
 
         $quote->likes()->attach($like);
 
-        $notification = Notification::create($validated);
+        $user = User::find(auth()->user()->id);
+
+        if((int)$validated['author_id'] !== $user->id) {
+
+            $notification = new Notification($validated);
+
+            $user->notifications()->save($notification);
+
+            $payload = (object)[
+                'to' =>  $notification->author_id,
+                'from' => auth('sanctum')->user()->username,
+                'notification' =>  new NotificationResource($notification)
+            ];
+
+            event(new UserFeedBack($payload));
+
+        }
 
         event(new UserLiked($like));
-
-        $payload = (object)[
-            'to' =>  $notification->author_id,
-            'from' => auth('sanctum')->user()->username,
-            'notification' =>  new NotificationResource($notification)
-        ];
-
-        event(new UserFeedBack($payload));
 
 
         return response()->json(['like' => $like], 201);

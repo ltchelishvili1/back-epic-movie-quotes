@@ -37,7 +37,6 @@ Route::controller(AuthController::class)->group(function () {
 
 });
 
-
 Route::controller(ResetPasswordController::class)->group(function () {
     Route::post('/forgot-password', 'resetPassword')->name('password.reset');
     Route::post('/reset-password', 'updatePassword')->name('password.change');
@@ -50,7 +49,6 @@ Route::controller(OAuthController::class)->group(function () {
 
 });
 
-
 Route::middleware('auth:sanctum')->group(
     function () {
         Route::get('/logout', [AuthController::class, 'logut'])->name('auth.logout');
@@ -58,18 +56,17 @@ Route::middleware('auth:sanctum')->group(
         Route::controller(MovieController::class)->group(function () {
             Route::post('/movies', 'store')->name('movies.store');
             Route::get('/movies', 'index')->name('movies.index');
-            Route::get('/movies/{movie}', 'show')->middleware('can:update-movie,movie')->name('movies.show');
+            Route::get('/movies/{movie}', 'show')->name('movies.show');
             Route::delete('/movies/{movie}', 'destroy')->middleware('can:update-movie,movie')->name('movies.destroy');
             Route::patch('/movies/{movie}', 'update')->middleware('can:update-movie,movie')->name('movies.update');
         });
-
 
         Route::controller(QuoteController::class)->group(function () {
             Route::get('/quotes', 'index')->name('quote.index');
             Route::post('/quotes', 'store')->name('quotes.store');
             Route::patch('/quotes/{quote}', 'update')->middleware('can:update-quote,quote')->name('quotes.update');
             Route::delete('/quotes/{quote}', 'destroy')->middleware('can:update-quote,quote')->name('quotes.destroy');
-            Route::get('/quotes/{quote}', 'show')->middleware('can:update-quote,quote')->name('quote.show');
+            Route::get('/quotes/{quote}', 'show')->name('quote.show');
         });
 
         Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
@@ -89,9 +86,6 @@ Route::middleware('auth:sanctum')->group(
             Route::post('/comments', 'store')->name('comment.store');
             Route::delete('/comments/{comment}', 'destroy')->middleware('can:delete-comment,comment')->name('comment.destroy');
         });
-
-
-
 
         Route::controller(NotificationController::class)->group(function () {
             Route::get('notifications', 'index')->name('notiification.index');

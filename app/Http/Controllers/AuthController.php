@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -23,7 +24,7 @@ class AuthController extends Controller
 
             request()->session()->regenerate();
 
-            return response()->json(['user' => auth()->user(),'message'=> __('validation.successfully_logged_in')], 200);
+            return response()->json(['user' => new UserResource(auth()->user()),'message'=> __('validation.successfully_logged_in')], 200);
 
         } else {
 
@@ -40,7 +41,7 @@ class AuthController extends Controller
 
         request()->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logged out'])->withCookie(cookie()->forget('XSRF-TOKEN'));
+        return response()->json(['message' => __('validation.logged_out')])->withCookie(cookie()->forget('XSRF-TOKEN'));
 
     }
 

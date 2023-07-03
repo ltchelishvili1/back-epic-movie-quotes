@@ -36,7 +36,7 @@ class UpdateMovieRequest extends FormRequest
             'description_ka' => 'nullable|regex:/^[ა-ჰ.,!?\s]*$/',
             'description_en' => 'nullable|regex:/^[a-zA-Z0-9\s]+$/',
             'genres' => 'nullable',
-            'thumbnail' => 'nullable',
+            'thumbnail' => 'nullable|image|mimes:png,jpg|max:2048',
         ];
     }
 

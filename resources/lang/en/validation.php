@@ -6,7 +6,7 @@ return [
     'max.string'                            => 'Should be no more thant 15 charachters!',
     'wrong_credential'                      => 'Your provided credential could not be verified.',
     'email'                                 => 'Should be Email',
-    'unique'                                => 'User Already Exists',
+    'unique'                                => 'Already Exists',
     'same'					                => 'Passwords should be same',
     'exists'                                => 'User does not exist',
     'invalid_credentials'                   => 'Invalid Credentials',
@@ -30,7 +30,7 @@ return [
     'bad_request'                           => 'Bad request',
     'user_not_found'                        => 'User not found!',
     'auth_successfully'                     => 'Authenticated successfully',
-    'email_not_verified'                    => 'email_not_verified',
+    'email_not_verified'                    => 'Email not verified',
     'email_verification_required'           => 'Email verification required',
     'movie_quotes'                          => 'MOVIE QUOTES',
     'hello'                                 => 'Hello',
@@ -40,7 +40,7 @@ return [
     'have_any_problems'                     => 'If you have any problems, please contact us: support@moviequotes.ge',
     'moviequotes_crew'                      =>  'MovieQuotes Crew',
     'reset_password'                        => 'Reset Password',
-    'thanks_for_reset'                      => 'Thanks for using Movie quotes! We really appreciate it. Please click the button below to reset your password:'
-
-
+    'thanks_for_reset'                      => 'Thanks for using Movie quotes! We really appreciate it. Please click the button below to reset your password:',
+    'check_email'                           =>  'Instruction sent to email',
+    'logged_out'                            => 'Logged out'
 ];

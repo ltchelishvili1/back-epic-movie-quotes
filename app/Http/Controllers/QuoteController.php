@@ -7,11 +7,20 @@ use App\Http\Requests\UpdateQuoteRequest;
 use App\Http\Resources\QuoteCardResource;
 use App\Http\Resources\QuoteResource;
 use App\Models\Quote;
+use App\Services\FileUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
+    protected $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
+
+
     public function index(Request $request)
     {
         $searchKey = $request->query('searchKey');
@@ -31,27 +40,25 @@ class QuoteController extends Controller
     }
 
 
-
     public function store(StoreQuoteRequest $request)
     {
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
 
-            $path = $request->file('image')->store('quote-image');
+            $validated['image'] = $this->fileUploadService->uploadFile($request->file('image'), 'quote-image');
 
-            $validated['image'] = url('storage/' . $path);
         }
 
         $quote = Quote::create($validated);
 
-        return response()->json(['quote' => $quote], 201);
+        return response()->json(['quote' => new QuoteResource($quote)], 201);
     }
 
     public function show(Quote $quote): JsonResponse
     {
 
-        return response()->json(['quote' => $quote], 200);
+        return response()->json(['quote' => new QuoteResource($quote)], 200);
     }
 
 
@@ -63,14 +70,12 @@ class QuoteController extends Controller
 
         if ($request->hasFile('image')) {
 
-            $path = $request->file('image')->store('movie-image');
-
-            $validated['image'] = url('storage/' . $path);
+            $validated['image'] = $this->fileUploadService->uploadFile($request->file('image'), 'quote-image');
         }
 
         $quote->update($validated);
 
-        return response()->json(['quote' => $quote]);
+        return response()->json(['quote' => new QuoteResource($quote)]);
     }
 
 

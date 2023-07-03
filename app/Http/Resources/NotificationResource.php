@@ -20,7 +20,7 @@ class NotificationResource extends JsonResource
             'has_user_seen' => $this->has_user_seen,
             'created_at' => $this->created_at,
             'id' => $this->id,
-            'notification_sender' => new NotificationSenderResource(User::find($this->user_id)),
+            'notification_sender' => new NotificationSenderResource(User::find($this->notifiable_id)),
             'type' => $this->type,
             'quote' => [
                 'quote_id' => $this->quote_id,
