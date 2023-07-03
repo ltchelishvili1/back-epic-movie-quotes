@@ -18,14 +18,14 @@ class StoreMovieRequest extends FormRequest
             'director' => 'required',
             'description' => 'required',
             'title_en' => 'required|regex:/^[a-zA-Z0-9\s]+$/|unique:movies,title->en',
-            'title_ka' => 'required|regex:/^[ა-ჰ.,!?\s]*$/|unique:movies,title->ka',
+            'title_ka' => 'required|regex:/^[ა-ჰ0-9.,!?\s]*$/|unique:movies,title->ka',
             'director_en' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
             'director_ka' => 'required|regex:/^[ა-ჰ.,!?\s]*$/',
             'release_year' => 'required',
             'description_ka' => 'required|regex:/^[ა-ჰ.,!?\s]*$/',
             'description_en' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
             'genres'=> 'required',
-            'thumbnail' => 'required|image',
+            'thumbnail' => 'required|image|mimes:png,jpg|max:2048',
             'user_id' => 'required'
         ];
 

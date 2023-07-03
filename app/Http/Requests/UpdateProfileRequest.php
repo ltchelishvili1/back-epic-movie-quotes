@@ -18,7 +18,7 @@ class UpdateProfileRequest extends FormRequest
             'email'            => 'nullable|email|max:255|unique:users,email',
             'password'         => 'nullable|min:3|max:255',
             'password_confirm' => 'nullable|same:password',
-            'photo'            =>'image'
+            'photo'            =>  'nullable|image|mimes:png,jpg|max:2048'
         ];
     }
 }

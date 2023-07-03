@@ -9,6 +9,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\NotificationResource;
 use App\Models\Comment;
 use App\Models\Notification;
+use App\Models\User;
 
 class CommentController extends Controller
 {
@@ -18,9 +19,13 @@ class CommentController extends Controller
 
         $comment = Comment::create($validated);
 
-        if((int)$validated['author_id'] !== auth()->user()->id) {
+        $user = User::find(auth()->user()->id);
 
-            $notification = Notification::create($validated);
+        if((int)$validated['author_id'] !== $user->id) {
+
+            $notification = new Notification($validated);
+
+            $user->notifications()->save($notification);
 
             $payload = (object)[
                 'to' =>  $notification->author_id,
