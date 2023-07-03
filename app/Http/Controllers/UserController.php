@@ -3,20 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\FileUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    protected $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
+
+
     public function index(): JsonResponse
     {
 
         return response()->json(
             [
                 'message' => __('validation.auth_successfully'),
-                'user' => auth()->user()
+                'user' => new UserResource(auth()->user())
             ],
             200
         );
@@ -32,14 +42,13 @@ class UserController extends Controller
 
         if ($request->hasFile('photo')) {
 
-            $path = $request->file('photo')->store('photo');
+            $user->thumbnail = $this->fileUploadService->uploadFile($request->file('photo'), 'photo');
 
-            $user->thumbnail = url('storage/' . $path);
-
-            $user->save();
         }
 
-        return response()->json($user);
+        $user->save();
+
+        return response()->json(['user' => new UserResource($user)], 200);
     }
 
 
@@ -55,7 +64,7 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        return response()->json($request->email);
+        return response()->json(['message' => __('validation.check_email')]);
     }
 
 

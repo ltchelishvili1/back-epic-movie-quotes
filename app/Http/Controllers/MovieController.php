@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Resources\MovieNameResource;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
+use App\Services\FileUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
+    protected $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
+
     public function index(Request $request)
     {
         if(isset($request['searchKey'])) {
@@ -23,7 +32,7 @@ class MovieController extends Controller
 
         }
 
-        return response()->json(['movies' =>  MovieResource::collection(Movie::where('user_id', auth()->id())->get())]);
+        return response()->json(['movies' =>  MovieResource::collection(Movie::all())]);
     }
 
     public function store(StoreMovieRequest $request)
@@ -33,9 +42,8 @@ class MovieController extends Controller
 
         if ($request->hasFile('thumbnail')) {
 
-            $path = $request->file('thumbnail')->store('movie-thumbnail');
+            $validated['thumbnail'] = $this->fileUploadService->uploadFile($request->file('thumbnail'), 'movie-thumbnail');
 
-            $validated['thumbnail'] = url('storage/' . $path);
         }
 
         $movie = Movie::create($validated);
@@ -60,9 +68,8 @@ class MovieController extends Controller
 
         if ($request->hasFile('thumbnail')) {
 
-            $path = $request->file('thumbnail')->store('movie-thumbnail');
+            $validated['thumbnail'] = $this->fileUploadService->uploadFile($request->file('thumbnail'), 'movie-thumbnail');
 
-            $validated['thumbnail'] = url('storage/' . $path);
         }
 
         $movie->update($validated);

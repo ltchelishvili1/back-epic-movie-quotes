@@ -18,17 +18,21 @@ class CommentController extends Controller
 
         $comment = Comment::create($validated);
 
-        $notification = Notification::create($validated);
+        if((int)$validated['author_id'] !== auth()->user()->id) {
+
+            $notification = Notification::create($validated);
+
+            $payload = (object)[
+                'to' =>  $notification->author_id,
+                'from' => auth('sanctum')->user()->username,
+                'notification' => new NotificationResource($notification)
+            ];
+
+            event(new UserFeedBack($payload));
+
+        }
 
         event(new UserLiked(['comment' => new CommentResource($comment)]));
-
-        $payload = (object)[
-            'to' =>  $notification->author_id,
-            'from' => auth('sanctum')->user()->username,
-            'notification' => new NotificationResource($notification)
-        ];
-
-        event(new UserFeedBack($payload));
 
         return response()->json(['comment' => $comment], 201);
     }

@@ -21,7 +21,8 @@ class MovieResource extends JsonResource
             'director' => $this->getTranslations('director'),
             'release_year' => $this->release_year,
             'quotes' => QuoteResource::collection($this->whenLoaded('quotes')),
-            'genres' => $this->genres
+            'genres' => $this->genres,
+            'author_id' => $this->user_id
         ];
     }
 }

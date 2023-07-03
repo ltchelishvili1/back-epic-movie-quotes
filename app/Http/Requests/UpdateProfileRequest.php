@@ -14,10 +14,11 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username'       => 'nullable|min:3|max:255|unique:users,username',
-            'email'          => 'nullable|email|max:255|unique:users,email',
-            'password'       => 'nullable|min:3|max:255',
-            'photo'     =>'image'
+            'username'         => 'nullable|min:3|max:255|unique:users,username',
+            'email'            => 'nullable|email|max:255|unique:users,email',
+            'password'         => 'nullable|min:3|max:255',
+            'password_confirm' => 'nullable|same:password',
+            'photo'            =>'image'
         ];
     }
 }

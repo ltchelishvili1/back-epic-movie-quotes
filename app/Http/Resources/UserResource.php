@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuoteCardResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,12 @@ class QuoteCardResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'       => $this->id,
-            'image'    => $this->image,
-            'quote'    => $this-> getTranslations('quote'),
-            'movie_id' => $this->movie_id
+            'id'    => $this->id,
+            'thumbnail' => $this->thumbnail,
+            'username' => $this->username,
+            'email' => $this->email,
+            'google_id' => $this->google_id
+
 
         ];
     }

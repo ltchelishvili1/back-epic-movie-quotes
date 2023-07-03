@@ -24,17 +24,21 @@ class LikeController extends Controller
 
         $quote->likes()->attach($like);
 
-        $notification = Notification::create($validated);
+        if((int)$validated['author_id'] !== auth()->user()->id) {
+
+            $notification = Notification::create($validated);
+
+            $payload = (object)[
+                'to' =>  $notification->author_id,
+                'from' => auth('sanctum')->user()->username,
+                'notification' =>  new NotificationResource($notification)
+            ];
+
+            event(new UserFeedBack($payload));
+
+        }
 
         event(new UserLiked($like));
-
-        $payload = (object)[
-            'to' =>  $notification->author_id,
-            'from' => auth('sanctum')->user()->username,
-            'notification' =>  new NotificationResource($notification)
-        ];
-
-        event(new UserFeedBack($payload));
 
 
         return response()->json(['like' => $like], 201);

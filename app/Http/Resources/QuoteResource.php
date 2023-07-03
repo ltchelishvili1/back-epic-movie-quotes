@@ -31,7 +31,8 @@ class QuoteResource extends JsonResource
                 'release_year' => $this->movie->release_year,
             ],
             'likes' =>  $this->likes,
-            'comments' => $this->comments
+            'comments' => $this->comments,
+            'author_id' => $this->user_id
 
         ];
     }
