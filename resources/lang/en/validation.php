@@ -42,5 +42,7 @@ return [
     'reset_password'                        => 'Reset Password',
     'thanks_for_reset'                      => 'Thanks for using Movie quotes! We really appreciate it. Please click the button below to reset your password:',
     'check_email'                           =>  'Instruction sent to email',
-    'logged_out'                            => 'Logged out'
+    'logged_out'                            => 'Logged out',
+    'verification'                          =>  'Verification'
+
 ];
