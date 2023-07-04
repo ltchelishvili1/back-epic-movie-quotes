@@ -20,7 +20,9 @@ class UserCreatedListener
     public function handle(UserCreated $event): void
     {
         $user = $event->user;
-        $user->thumbnail = url('storage/' . 'NoUserImage.png');
+
+        $user->thumbnail = url(asset('images/NoUserImage.png'));
+
         $user->save();
     }
 }
