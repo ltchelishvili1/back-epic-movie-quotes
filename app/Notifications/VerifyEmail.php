@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
+use App\Notifications\VerifyEmailBase;
 
 class VerifyEmail extends VerifyEmailBase
 {
@@ -16,8 +16,10 @@ class VerifyEmail extends VerifyEmailBase
         ->subject('verify')
         ->view(
             'email.verify-message',
-            [   'url' => $url,
-                'name' => $notifiable->username]
+            [
+                 'url' => $url,
+                'name' => $notifiable->username
+            ]
         );
     }
 
