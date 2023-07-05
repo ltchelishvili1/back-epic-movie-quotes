@@ -10,31 +10,33 @@ use Illuminate\Queue\SerializesModels;
 
 class UserUnLiked implements ShouldBroadcast
 {
-    use Dispatchable;
-    use InteractsWithSockets;
-    use SerializesModels;
+	use Dispatchable;
 
-    public $message;
+	use InteractsWithSockets;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($message)
-    {
-        $this->message = $message;
-    }
+	use SerializesModels;
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return [
-            new Channel('unlikes'),
-        ];
-    }
+	public $message;
+
+	/**
+	 * Create a new event instance.
+	 *
+	 * @return void
+	 */
+	public function __construct($message)
+	{
+		$this->message = $message;
+	}
+
+	/**
+	 * Get the channels the event should broadcast on.
+	 *
+	 * @return array<int, \Illuminate\Broadcasting\Channel>
+	 */
+	public function broadcastOn(): array
+	{
+		return [
+			new Channel('unlikes'),
+		];
+	}
 }

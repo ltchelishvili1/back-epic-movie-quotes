@@ -8,17 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PasswordHistory extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'password',
-    ];
+	protected $fillable = [
+		'user_id',
+		'password',
+	];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
 }

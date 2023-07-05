@@ -8,10 +8,9 @@ use Illuminate\Auth\Access\Response;
 
 class CommentPolicy
 {
-    public function delete(User $user, Comment $comment)
-    {
-        return $user->id == $comment->user_id ? Response::allow()
-        : Response::deny('Not Authorized.');
-    }
-
+	public function delete(User $user, Comment $comment)
+	{
+		return $user->id == $comment->user_id ? Response::allow()
+		: Response::deny('Not Authorized.');
+	}
 }

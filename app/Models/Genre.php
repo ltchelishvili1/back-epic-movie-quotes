@@ -9,13 +9,14 @@ use Spatie\Translatable\HasTranslations;
 
 class Genre extends Model
 {
-    use HasFactory;
-    use HasTranslations;
-    public $translatable = ['name'];
+	use HasFactory;
 
+	use HasTranslations;
 
-    public function movies(): BelongsToMany
-    {
-        return $this->belongsToMany(Movie::class);
-    }
+	public $translatable = ['name'];
+
+	public function movies(): BelongsToMany
+	{
+		return $this->belongsToMany(Movie::class);
+	}
 }

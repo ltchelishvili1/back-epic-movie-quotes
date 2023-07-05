@@ -15,50 +15,43 @@ use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {
-    public function store(StoreLikeRequest $request): JsonResponse
-    {
+	public function store(StoreLikeRequest $request): JsonResponse
+	{
+		$validated = $request->validated();
 
-        $validated = $request->validated();
+		$like = Like::create($validated);
 
-        $like = Like::create($validated);
+		$quote = Quote::find($validated['quote_id']);
 
-        $quote = Quote::find($validated['quote_id']);
+		$quote->likes()->attach($like);
 
-        $quote->likes()->attach($like);
+		$user = User::find(auth('sanctum')->id());
 
-        $user = User::find(auth('sanctum')->id());
+		if ((int)$validated['author_id'] !== $user->id) {
+			$notification = new Notification($validated);
 
-        if((int)$validated['author_id'] !== $user->id) {
+			$user->notifications()->save($notification);
 
-            $notification = new Notification($validated);
+			$payload = (object)[
+				'to'           => $notification->author_id,
+				'from'         => auth('sanctum')->user()->username,
+				'notification' => new NotificationResource($notification),
+			];
 
-            $user->notifications()->save($notification);
+			event(new UserFeedBack($payload));
+		}
 
-            $payload = (object)[
-                'to' =>  $notification->author_id,
-                'from' => auth('sanctum')->user()->username,
-                'notification' =>  new NotificationResource($notification)
-            ];
+		event(new UserLiked($like));
 
-            event(new UserFeedBack($payload));
+		return response()->json(['like' => $like], 201);
+	}
 
-        }
+	public function destroy(Like $like): JsonResponse
+	{
+		event(new UserUnLiked(['unlike' => $like]));
 
-        event(new UserLiked($like));
+		$like->delete();
 
-
-        return response()->json(['like' => $like], 201);
-    }
-
-    public function destroy(Like $like): JsonResponse
-    {
-
-        event(new UserUnLiked(['unlike' => $like]));
-
-        $like->delete();
-
-        return response()->json(['message' => __('validation.like_deleted_successfully'), 200]);
-    }
-
-
+		return response()->json(['message' => __('validation.like_deleted_successfully'), 200]);
+	}
 }

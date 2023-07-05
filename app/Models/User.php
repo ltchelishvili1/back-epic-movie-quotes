@@ -16,74 +16,79 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use HasApiTokens;
-    use HasFactory;
-    use Notifiable;
-    use CanResetPasswordTrait;
+	use HasApiTokens;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'username',
-        'email',
-        'password',
-        'google_id',
-        'email_verified_at'
-    ];
+	use HasFactory;
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	use Notifiable;
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+	use CanResetPasswordTrait;
 
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->notify(new VerifyEmail());
-    }
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array<int, string>
+	 */
+	protected $fillable = [
+		'username',
+		'email',
+		'password',
+		'google_id',
+		'email_verified_at',
+	];
 
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPassword($token));
-    }
+	/**
+	 * The attributes that should be hidden for serialization.
+	 *
+	 * @var array<int, string>
+	 */
+	protected $hidden = [
+		'password',
+		'remember_token',
+	];
 
-    public function PasswordHistories(): HasMany
-    {
-        return $this->hasMany(PasswordHistory::class);
-    }
+	/**
+	 * The attributes that should be cast.
+	 *
+	 * @var array<string, string>
+	 */
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+		'password'          => 'hashed',
+	];
 
-    public function Movies(): HasMany
-    {
-        return $this->hasMany(Movie::class);
-    }
-    public function likes(): HasMany
-    {
-        return $this->hasMany(Like::class);
-    }
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
+	public function sendEmailVerificationNotification(): void
+	{
+		$this->notify(new VerifyEmail());
+	}
 
-    public function notifications(): MorphMany
-    {
-        return $this->morphMany(Notification::class, 'notifiable');
-    }
+	public function sendPasswordResetNotification($token)
+	{
+		$this->notify(new ResetPassword($token));
+	}
+
+	public function PasswordHistories(): HasMany
+	{
+		return $this->hasMany(PasswordHistory::class);
+	}
+
+	public function Movies(): HasMany
+	{
+		return $this->hasMany(Movie::class);
+	}
+
+	public function likes(): HasMany
+	{
+		return $this->hasMany(Like::class);
+	}
+
+	public function comments(): HasMany
+	{
+		return $this->hasMany(Comment::class);
+	}
+
+	public function notifications(): MorphMany
+	{
+		return $this->morphMany(Notification::class, 'notifiable');
+	}
 }

@@ -10,34 +10,30 @@ use Illuminate\Support\Facades\Auth;
 
 class OAuthController extends Controller
 {
-    public function redirect(): string
-    {
-        return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
-    }
+	public function redirect(): string
+	{
+		return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+	}
 
-    public function callbackGoogle(): RedirectResponse|JsonResponse
-    {
-        try {
+	public function callbackGoogle(): RedirectResponse|JsonResponse
+	{
+		try {
+			$google_user = Socialite::driver('google')->stateless()->user();
 
-            $google_user= Socialite::driver('google')->stateless()->user();
+			$user = User::firstOrCreate(
+				['email' => $google_user->getEmail()],
+				[
+					'google_id'         => $google_user->getId(),
+					'username'          => $google_user->getName(),
+					'email_verified_at' => now(),
+				]
+			);
 
-            $user = User::firstOrCreate(
-                ['email' => $google_user->getEmail()],
-                [
-                    'google_id' => $google_user->getId(),
-                    'username' => $google_user->getName(),
-                    'email_verified_at' => now()
-                ]
-            );
+			Auth::login($user);
 
-            Auth::login($user);
-
-            return redirect(env('FRONT_END_BASE_URL') . '/news-feed');
-
-        } catch(\Throwable $th) {
-
-            return response()->json(['errors' => [__('validation.something_went_wrong')]], 400);
-
-        }
-    }
+			return redirect(env('FRONT_END_BASE_URL') . '/news-feed');
+		} catch(\Throwable $th) {
+			return response()->json(['errors' => [__('validation.something_went_wrong')]], 400);
+		}
+	}
 }

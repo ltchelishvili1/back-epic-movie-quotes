@@ -12,60 +12,51 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    protected $fileUploadService;
+	protected $fileUploadService;
 
-    public function __construct(FileUploadService $fileUploadService)
-    {
-        $this->fileUploadService = $fileUploadService;
-    }
+	public function __construct(FileUploadService $fileUploadService)
+	{
+		$this->fileUploadService = $fileUploadService;
+	}
 
+	public function index(): JsonResponse
+	{
+		return response()->json(
+			[
+				'message' => __('validation.auth_successfully'),
+				'user'    => new UserResource(auth()->user()),
+			],
+			200
+		);
+	}
 
-    public function index(): JsonResponse
-    {
+	public function update(UpdateProfileRequest $request): JsonResponse
+	{
+		$validated = $request->validated();
 
-        return response()->json(
-            [
-                'message' => __('validation.auth_successfully'),
-                'user' => new UserResource(auth()->user())
-            ],
-            200
-        );
-    }
+		$user = User::find(auth()->id());
 
-    public function update(UpdateProfileRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
+		$user->update($validated);
 
-        $user = User::find(auth()->id());
+		if ($request->hasFile('photo')) {
+			$user->thumbnail = $this->fileUploadService->uploadFile($request->file('photo'), 'photo');
+		}
 
-        $user->update($validated);
+		$user->save();
 
-        if ($request->hasFile('photo')) {
+		return response()->json(['user' => new UserResource($user)], 200);
+	}
 
-            $user->thumbnail = $this->fileUploadService->uploadFile($request->file('photo'), 'photo');
+	public function updateEmail(Request $request): JsonResponse
+	{
+		$user = User::find(auth()->id());
 
-        }
+		$user->email_verified_at = null;
 
-        $user->save();
+		$user->email = $request->email;
 
-        return response()->json(['user' => new UserResource($user)], 200);
-    }
+		event(new Registered($user));
 
-
-
-    public function updateEmail(Request $request): JsonResponse
-    {
-
-        $user = User::find(auth()->id());
-
-        $user->email_verified_at = null;
-
-        $user->email = $request->email;
-
-        event(new Registered($user));
-
-        return response()->json(['message' => __('validation.check_email')]);
-    }
-
-
+		return response()->json(['message' => __('validation.check_email')]);
+	}
 }

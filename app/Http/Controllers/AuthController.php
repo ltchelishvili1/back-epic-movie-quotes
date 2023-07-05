@@ -11,61 +11,51 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
+	public function login(LoginRequest $request): JsonResponse
+	{
+		$validated = $request->validated();
 
-        $fieldType = filter_var($validated['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+		$fieldType = filter_var($validated['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        if (auth()->attempt(
-            [
-            $fieldType => $validated['username'],
-            'password' => $validated['password'],
-            ],
-            $validated['remember_me']
-        )) {
+		if (auth()->attempt(
+			[
+				$fieldType => $validated['username'],
+				'password' => $validated['password'],
+			],
+			$validated['remember_me']
+		)) {
+			request()->session()->regenerate();
 
-            request()->session()->regenerate();
+			return response()->json(['user' => new UserResource(auth()->user()), 'message'=> __('validation.successfully_logged_in')], 200);
+		} else {
+			return response()->json(['errors' => ['password' => [__('validation.invalid_credentials')]]], 404);
+		}
+	}
 
-            return response()->json(['user' => new UserResource(auth()->user()),'message'=> __('validation.successfully_logged_in')], 200);
+	public function logut(): JsonResponse
+	{
+		auth()->user()->logout;
 
-        } else {
+		request()->session()->invalidate();
 
-            return response()->json(['errors' => ['password' => [__('validation.invalid_credentials')]]], 404);
-        }
+		request()->session()->regenerateToken();
 
-    }
+		return response()->json(['message' => __('validation.logged_out')])->withCookie(cookie()->forget('XSRF-TOKEN'));
+	}
 
-    public function logut(): JsonResponse
-    {
-        auth()->user()->logout;
+	public function register(RegisterRequest $request): JsonResponse
+	{
+		$validated = $request->validated();
 
-        request()->session()->invalidate();
+		$user = User::create(
+			[
+				'username' => $validated['username'],
+				'email'    => $validated['email'],
+				'password' => $validated['password']]
+		);
 
-        request()->session()->regenerateToken();
+		event(new Registered($user));
 
-        return response()->json(['message' => __('validation.logged_out')])->withCookie(cookie()->forget('XSRF-TOKEN'));
-
-    }
-
-    public function register(RegisterRequest $request): JsonResponse
-    {
-
-        $validated = $request->validated();
-
-        $user = User::create(
-            [
-            'username' => $validated['username'],
-            'email' => $validated['email'],
-            'password' => $validated['password']]
-        );
-
-        event(new Registered($user));
-
-        return response()->json(['success' => __('validation.registered_successfully')], 201);
-    }
-
-
-
-
+		return response()->json(['success' => __('validation.registered_successfully')], 201);
+	}
 }
