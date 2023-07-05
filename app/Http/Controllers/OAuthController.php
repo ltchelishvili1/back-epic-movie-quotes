@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 
 class OAuthController extends Controller
 {
-    public function redirect()
+    public function redirect(): string
     {
         return Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
     }
 
-    public function callbackGoogle()
+    public function callbackGoogle(): RedirectResponse|JsonResponse
     {
         try {
 

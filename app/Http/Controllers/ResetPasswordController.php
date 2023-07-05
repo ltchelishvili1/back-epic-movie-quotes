@@ -9,12 +9,13 @@ use App\Models\PasswordHistory;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
-    public function resetPassword(ResetPasswordRequest $request)
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
 
         $validated = $request->validated();
@@ -34,7 +35,7 @@ class ResetPasswordController extends Controller
 
     }
 
-    public function updatePassword(UpdatePasswordRequest $request)
+    public function updatePassword(UpdatePasswordRequest $request): JsonResponse
     {
 
         $validated = $request->validated();
@@ -78,7 +79,7 @@ class ResetPasswordController extends Controller
 
     }
 
-    public function checkToken(checkTokenRequest $request)
+    public function checkToken(checkTokenRequest $request): JsonResponse
     {
         $validated = $request->validated();
 

@@ -10,10 +10,11 @@ use App\Http\Resources\NotificationResource;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request): JsonResponse
     {
         $validated =$request->validated();
 
@@ -42,7 +43,7 @@ class CommentController extends Controller
         return response()->json(['comment' => $comment], 201);
     }
 
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment): JsonResponse
     {
         $comment->delete();
 

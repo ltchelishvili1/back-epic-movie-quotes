@@ -21,7 +21,7 @@ class QuoteController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $searchKey = $request->query('searchKey');
 
@@ -40,7 +40,7 @@ class QuoteController extends Controller
     }
 
 
-    public function store(StoreQuoteRequest $request)
+    public function store(StoreQuoteRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
@@ -62,7 +62,7 @@ class QuoteController extends Controller
     }
 
 
-    public function update(UpdateQuoteRequest $request, Quote $quote)
+    public function update(UpdateQuoteRequest $request, Quote $quote): JsonResponse
     {
         $validated = $request->validated();
 
@@ -79,7 +79,7 @@ class QuoteController extends Controller
     }
 
 
-    public function destroy(Request $request, Quote $quote)
+    public function destroy(Request $request, Quote $quote): JsonResponse
     {
         $quote->delete();
 

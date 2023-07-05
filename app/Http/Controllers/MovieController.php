@@ -20,7 +20,7 @@ class MovieController extends Controller
         $this->fileUploadService = $fileUploadService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         if(isset($request['searchKey'])) {
 
@@ -35,7 +35,7 @@ class MovieController extends Controller
         return response()->json(['movies' =>  MovieResource::collection(Movie::all())]);
     }
 
-    public function store(StoreMovieRequest $request)
+    public function store(StoreMovieRequest $request): JsonResponse
     {
 
         $validated = $request->validated();

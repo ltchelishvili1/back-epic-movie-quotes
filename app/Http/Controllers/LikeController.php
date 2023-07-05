@@ -11,10 +11,11 @@ use App\Models\Like;
 use App\Models\Notification;
 use App\Models\Quote;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {
-    public function store(StoreLikeRequest $request)
+    public function store(StoreLikeRequest $request): JsonResponse
     {
 
         $validated = $request->validated();
@@ -49,7 +50,7 @@ class LikeController extends Controller
         return response()->json(['like' => $like], 201);
     }
 
-    public function destroy(Like $like)
+    public function destroy(Like $like): JsonResponse
     {
 
         event(new UserUnLiked(['unlike' => $like]));
