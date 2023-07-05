@@ -28,7 +28,7 @@ class StoreCommentRequest extends FormRequest
     {
 
         $requestData = [
-            'user_id' => auth()->user()->id,
+            'user_id' => auth('sanctum')->id(),
             'quote_id' => $this->quote_id,
             'comment' => $this->comment,
             'type' => 'comment',

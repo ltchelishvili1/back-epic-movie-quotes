@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\checkTokenRequest;
-use App\Http\Requests\ResetPasswordRequest;
-use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Requests\ResetPassword\CheckTokenRequest;
+use App\Http\Requests\ResetPassword\ResetPasswordRequest;
+use App\Http\Requests\ResetPassword\UpdatePasswordRequest;
 use App\Models\PasswordHistory;
 use App\Models\PasswordReset;
 use App\Models\User;
@@ -79,7 +79,7 @@ class ResetPasswordController extends Controller
 
     }
 
-    public function checkToken(checkTokenRequest $request): JsonResponse
+    public function checkToken(CheckTokenRequest $request): JsonResponse
     {
         $validated = $request->validated();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Movie;
 
 use App\Models\Movie;
 use Illuminate\Foundation\Http\FormRequest;
@@ -36,7 +36,7 @@ class UpdateMovieRequest extends FormRequest
             'description_ka' => 'nullable|regex:/^[ა-ჰ.,!?\s]*$/',
             'description_en' => 'nullable|regex:/^[a-zA-Z0-9\s]+$/',
             'genres' => 'nullable',
-            'thumbnail' => 'nullable|image|mimes:png,jpg|max:2048',
+            'thumbnail' => 'nullable',
         ];
     }
 
@@ -44,7 +44,7 @@ class UpdateMovieRequest extends FormRequest
     {
 
         $requestData = [
-            'user_id' => auth()->user()->id,
+            'user_id' => auth('sanctum')->id(),
             'director' => [
                 'en' => $this->director_en,
                 'ka' => $this->director_ka

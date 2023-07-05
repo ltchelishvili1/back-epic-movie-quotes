@@ -34,6 +34,7 @@ Route::get('set-language/{language}', [LanguageController::class, 'setLanguage']
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login')->middleware('ensure.email.verified')->name('auth.login');
+    Route::post('/register', 'register')->name('auth.register');
 
 });
 
@@ -45,7 +46,7 @@ Route::controller(ResetPasswordController::class)->group(function () {
 
 Route::controller(OAuthController::class)->group(function () {
     Route::get('/auth/google', 'redirect')->name('google.auth');
-    Route::get('auth/google/call-back', 'callbackGoogle')->name('google.callback');
+    Route::get('auth/google-callback', 'callbackGoogle')->name('google.callback');
 
 });
 

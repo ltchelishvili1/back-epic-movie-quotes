@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Movie;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -34,7 +34,7 @@ class StoreMovieRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'user_id' => auth()->user()->id,
+            'user_id' => auth('sanctum')->id(),
             'title' => [
                 'en' => $this->title_en,
                 'ka' => $this->title_ka,

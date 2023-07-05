@@ -24,7 +24,7 @@ class StoreLikeRequest extends FormRequest
     public function prepareForValidation()
     {
         $requestData = [
-            'user_id' => auth()->user()->id,
+            'user_id' => auth('sanctum')->id(),
             'quote_id' => $this->quote_id,
             'type' => 'like',
             'author_id' => Quote::find($this->quote_id)->user_id,

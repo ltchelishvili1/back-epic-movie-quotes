@@ -20,7 +20,7 @@ class CommentController extends Controller
 
         $comment = Comment::create($validated);
 
-        $user = User::find(auth()->user()->id);
+        $user = User::find(auth('sanctum')->id());
 
         if((int)$validated['author_id'] !== $user->id) {
 

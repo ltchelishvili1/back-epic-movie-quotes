@@ -26,7 +26,7 @@ class LikeController extends Controller
 
         $quote->likes()->attach($like);
 
-        $user = User::find(auth()->user()->id);
+        $user = User::find(auth('sanctum')->id());
 
         if((int)$validated['author_id'] !== $user->id) {
 

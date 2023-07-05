@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Quote;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,7 +31,7 @@ class StoreQuoteRequest extends FormRequest
                 'en' => $this->quote_en,
                 'ka' => $this->quote_ka,
             ],
-            'user_id' => auth()->user()->id,
+            'user_id' => auth('sanctum')->id(),
         ]);
     }
 

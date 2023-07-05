@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -43,6 +46,23 @@ class AuthController extends Controller
 
         return response()->json(['message' => __('validation.logged_out')])->withCookie(cookie()->forget('XSRF-TOKEN'));
 
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+
+        $validated = $request->validated();
+
+        $user = User::create(
+            [
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+            'password' => $validated['password']]
+        );
+
+        event(new Registered($user));
+
+        return response()->json(['success' => __('validation.registered_successfully')], 201);
     }
 
 

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Quote;
 
-use App\Models\Quote;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,7 +26,7 @@ class UpdateQuoteRequest extends FormRequest
                 'regex:/^[ა-ჰ.,!?\s]*$/',
                 Rule::unique('quotes', 'quote->ka')->ignore($this->quote_id),
             ],
-            'image' => 'nullable|image|mimes:png,jpg|max:2048',
+            'image' => 'nullable',
             'quote_id' => 'required',
             'movie_id' => 'required',
         ];
@@ -36,7 +35,7 @@ class UpdateQuoteRequest extends FormRequest
     public function prepareForValidation()
     {
         $requestData = [
-            'user_id' => auth()->user()->id,
+            'user_id' => auth('sanctum')->id(),
             'quote' => [
                 'en' => $this->quote_en,
                 'ka' => $this->quote_ka
