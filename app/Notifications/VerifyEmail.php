@@ -13,7 +13,7 @@ class VerifyEmail extends VerifyEmailBase
 
         return (new MailMessage())
 
-        ->subject(__('verification'))
+        ->subject(__('validation.verification'))
         ->view(
             'email.verify-message',
             [

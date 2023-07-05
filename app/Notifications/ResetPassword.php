@@ -28,7 +28,7 @@ class ResetPassword extends ResetPasswordBase
         );
 
         return (new MailMessage())
-        ->subject(__('reset_password'))
+        ->subject(__('validation.reset_password'))
         ->view(
             'email.reset-message',
             ['url' =>  env('FRONT_END_BASE_URL') . '/email-verify-token=' .$token . '/email=' . $modifiedEmail,
