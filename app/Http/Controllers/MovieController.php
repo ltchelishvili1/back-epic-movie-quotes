@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMovieRequest;
-use App\Http\Requests\UpdateMovieRequest;
-use App\Http\Resources\MovieNameResource;
+use App\Http\Requests\Movie\UpdateMovieRequest;
+use App\Http\Requests\Movie\StoreMovieRequest;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use App\Services\FileUploadService;
@@ -13,82 +12,69 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    protected $fileUploadService;
+	protected $fileUploadService;
 
-    public function __construct(FileUploadService $fileUploadService)
-    {
-        $this->fileUploadService = $fileUploadService;
-    }
+	public function __construct(FileUploadService $fileUploadService)
+	{
+		$this->fileUploadService = $fileUploadService;
+	}
 
-    public function index(Request $request): JsonResponse
-    {
-        if(isset($request['searchKey'])) {
+	public function index(Request $request): JsonResponse
+	{
+		if (isset($request['searchKey'])) {
+			$movies = Movie::search($request['searchKey'])
+			->orderByDesc('id')
+			->simplePaginate(6);
 
-            $movies = Movie::search($request['searchKey'])
-            ->orderByDesc('id')
-            ->simplePaginate(6);
+			return response()->json(['movies' => MovieResource::collection($movies)], 200);
+		}
 
-            return response()->json(['movies' => MovieResource::collection($movies)], 200);
+		return response()->json(['movies' =>  MovieResource::collection(Movie::all())]);
+	}
 
-        }
+	public function store(StoreMovieRequest $request): JsonResponse
+	{
+		$validated = $request->validated();
 
-        return response()->json(['movies' =>  MovieResource::collection(Movie::all())]);
-    }
+		if ($request->hasFile('thumbnail')) {
+			$validated['thumbnail'] = $this->fileUploadService->uploadFile($request->file('thumbnail'), 'movie-thumbnail');
+		}
 
-    public function store(StoreMovieRequest $request): JsonResponse
-    {
+		$movie = Movie::create($validated);
 
-        $validated = $request->validated();
+		$movie->genres()->attach(json_decode($validated['genres']));
 
-        if ($request->hasFile('thumbnail')) {
+		return response()->json(['movie' => $movie], 200);
+	}
 
-            $validated['thumbnail'] = $this->fileUploadService->uploadFile($request->file('thumbnail'), 'movie-thumbnail');
+	public function show(Movie $movie): JsonResponse
+	{
+		return response()->json(['movie' => new MovieResource($movie)], 200);
+	}
 
-        }
+	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
+	{
+		$validated = $request->validated();
 
-        $movie = Movie::create($validated);
+		$validated['thumbnail'] = $movie->thumbnail;
 
-        $movie->genres()->attach(json_decode($validated['genres']));
+		if ($request->hasFile('thumbnail')) {
+			$validated['thumbnail'] = $this->fileUploadService->uploadFile($request->file('thumbnail'), 'movie-thumbnail');
+		}
 
-        return response()->json(['movie' => $movie], 200);
-    }
+		$movie->update($validated);
 
-    public function show(Movie $movie): JsonResponse
-    {
-        return response()->json(['movie' => new MovieResource($movie)], 200);
-    }
+		$genres = json_decode($validated['genres']);
 
+		$movie->genres()->sync($genres);
 
-    public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
-    {
+		return response()->json(['movie' => $movie], 200);
+	}
 
-        $validated = $request->validated();
+	public function destroy(Movie $movie): JsonResponse
+	{
+		$movie->delete();
 
-        $validated['thumbnail'] = $movie->thumbnail;
-
-        if ($request->hasFile('thumbnail')) {
-
-            $validated['thumbnail'] = $this->fileUploadService->uploadFile($request->file('thumbnail'), 'movie-thumbnail');
-
-        }
-
-        $movie->update($validated);
-
-        $genres = json_decode($validated['genres']);
-
-        $movie->genres()->sync($genres);
-
-
-        return response()->json(['movie' => $movie], 200);
-
-    }
-
-    public function destroy(Movie $movie): JsonResponse
-    {
-        $movie->delete();
-
-        return response()->json(['message' => __('validation.movie_deleted_successfully')], 200);
-    }
-
-
+		return response()->json(['message' => __('validation.movie_deleted_successfully')], 200);
+	}
 }

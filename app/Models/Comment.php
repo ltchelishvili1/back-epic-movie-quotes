@@ -8,15 +8,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
-    use HasFactory;
-    protected $guarded =['id'];
+	use HasFactory;
 
-    public function quote(): BelongsTo
-    {
-        return $this->belongsTo(Quote::class);
-    }
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+	protected $guarded = ['id'];
+
+	public function quote(): BelongsTo
+	{
+		return $this->belongsTo(Quote::class);
+	}
+
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
 }

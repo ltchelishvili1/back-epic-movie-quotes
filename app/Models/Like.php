@@ -9,16 +9,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Like extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $guarded =['id'];
+	protected $guarded = ['id'];
 
-    public function quotes(): BelongsToMany
-    {
-        return $this->belongsToMany(Quote::class);
-    }
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+	public function quotes(): BelongsToMany
+	{
+		return $this->belongsToMany(Quote::class);
+	}
+
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
 }

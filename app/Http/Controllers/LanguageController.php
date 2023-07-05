@@ -8,15 +8,14 @@ use Illuminate\Support\Facades\Session;
 
 class LanguageController extends Controller
 {
-    public function setLanguage($lang): JsonResponse
-    {
-        if  (array_key_exists($lang, Config::get('languages'))) {
+	public function setLanguage($lang): JsonResponse
+	{
+		if (array_key_exists($lang, Config::get('languages'))) {
+			Session::put('locale', $lang);
 
-            Session::put('locale', $lang);
+			return response()->json(['messages' => [__('validation.language_changed_successfully')]]);
+		}
 
-            return response()->json(['messages' => [__('validation.language_changed_successfully')] ]);
-        }
-
-        return response()->json(['messages' => __('validation.something_went_wrong')]);
-    }
+		return response()->json(['messages' => __('validation.something_went_wrong')]);
+	}
 }

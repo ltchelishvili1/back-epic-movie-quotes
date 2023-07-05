@@ -11,60 +11,58 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Quote extends Model
 {
-    use HasFactory;
-    use HasTranslations;
+	use HasFactory;
 
-    protected $guarded = ['id'];
-    public $translatable = ['quote'];
+	use HasTranslations;
 
-    public function movie(): BelongsTo
-    {
-        return $this->belongsTo(Movie::class);
-    }
+	protected $guarded = ['id'];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+	public $translatable = ['quote'];
 
-    public function likes(): BelongsToMany
-    {
-        return $this->belongsToMany(Like::class);
-    }
+	public function movie(): BelongsTo
+	{
+		return $this->belongsTo(Movie::class);
+	}
 
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
 
-    public function notification(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
+	public function likes(): BelongsToMany
+	{
+		return $this->belongsToMany(Like::class);
+	}
 
-    public function scopeSearch($query, $searchKey)
-    {
-        if (isset($searchKey)) {
+	public function comments(): HasMany
+	{
+		return $this->hasMany(Comment::class);
+	}
 
-            if (trim($searchKey)[0] === '#') {
+	public function notification(): HasMany
+	{
+		return $this->hasMany(Notification::class);
+	}
 
-                $search = ltrim($searchKey, $searchKey[0]);
+	public function scopeSearch($query, $searchKey)
+	{
+		if (isset($searchKey)) {
+			if (trim($searchKey)[0] === '#') {
+				$search = ltrim($searchKey, $searchKey[0]);
 
-                $query->where('quote->en', 'like', '%' . $search . '%')
-                    ->orWhere('quote->ka', 'like', '%' . $search . '%');
+				$query->where('quote->en', 'like', '%' . $search . '%')
+					->orWhere('quote->ka', 'like', '%' . $search . '%');
+			} else {
+				$query->where(function ($query) use ($searchKey) {
+					$query->where('quote->en', 'like', '%' . $searchKey . '%')
+						->orWhere('quote->ka', 'like', '%' . $searchKey . '%');
+				})->orWhereHas('movie', function ($query) use ($searchKey) {
+					$query->where('title->en', 'like', '%' . $searchKey . '%')
+						->orWhere('title->ka', 'like', '%' . $searchKey . '%');
+				});
+			}
+		}
 
-            } else {
-
-                $query->where(function ($query) use ($searchKey) {
-                    $query->where('quote->en', 'like', '%' . $searchKey . '%')
-                        ->orWhere('quote->ka', 'like', '%' . $searchKey . '%');
-                })->orWhereHas('movie', function ($query) use ($searchKey) {
-                    $query->where('title->en', 'like', '%' . $searchKey . '%')
-                        ->orWhere('title->ka', 'like', '%' . $searchKey . '%');
-                });
-            }
-        }
-
-        return $query;
-    }
+		return $query;
+	}
 }

@@ -8,12 +8,11 @@ use Illuminate\Http\JsonResponse;
 
 class GenreController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): JsonResponse
-    {
-        return response()->json(['genres' => GenreResource::collection(Genre::all())], 200);
-    }
-
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index(): JsonResponse
+	{
+		return response()->json(['genres' => GenreResource::collection(Genre::all())], 200);
+	}
 }

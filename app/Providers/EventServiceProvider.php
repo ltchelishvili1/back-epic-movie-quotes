@@ -13,37 +13,38 @@ use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * The event to listener mappings for the application.
-     *
-     * @var array<class-string, array<int, class-string>>
-     */
-    protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-        UserCreated::class => [
-            ResetPasswordListener::class,
-            UserCreatedListener::class
-        ],
-    ];
+	/**
+	 * The event to listener mappings for the application.
+	 *
+	 * @var array<class-string, array<int, class-string>>
+	 */
+	protected $listen = [
+		Registered::class => [
+			SendEmailVerificationNotification::class,
+		],
+		UserCreated::class => [
+			ResetPasswordListener::class,
+			UserCreatedListener::class,
+		],
+	];
 
-    /**
-     * Register any events for your application.
-     */
-    public function boot(): void
-    {
-        parent::boot();
+	/**
+	 * Register any events for your application.
+	 */
+	public function boot(): void
+	{
+		parent::boot();
 
-        User::created(function (User $user) {
-            Event::dispatch(new UserCreated($user));
-        });
-    }
-    /**
-     * Determine if events and listeners should be automatically discovered.
-     */
-    public function shouldDiscoverEvents(): bool
-    {
-        return false;
-    }
+		User::created(function (User $user) {
+			Event::dispatch(new UserCreated($user));
+		});
+	}
+
+	/**
+	 * Determine if events and listeners should be automatically discovered.
+	 */
+	public function shouldDiscoverEvents(): bool
+	{
+		return false;
+	}
 }

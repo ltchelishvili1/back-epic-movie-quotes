@@ -11,49 +11,46 @@ use Spatie\Translatable\HasTranslations;
 
 class Movie extends Model
 {
-    use HasFactory;
-    use HasTranslations;
-    public $translatable = ['director', 'title', 'description'];
+	use HasFactory;
 
-    protected $guarded = ['id'];
+	use HasTranslations;
 
-    protected static function booted()
-    {
-        static::addGlobalScope('withGenres', function ($builder) {
-            $builder->with('genres');
-        });
+	public $translatable = ['director', 'title', 'description'];
 
-        static::addGlobalScope('withQuotes', function ($builder) {
-            $builder->with('quotes.comments');
-        });
-    }
+	protected $guarded = ['id'];
 
+	protected static function booted()
+	{
+		static::addGlobalScope('withGenres', function ($builder) {
+			$builder->with('genres');
+		});
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+		static::addGlobalScope('withQuotes', function ($builder) {
+			$builder->with('quotes.comments');
+		});
+	}
 
-    public function genres(): BelongsToMany
-    {
-        return $this->belongsToMany(Genre::class);
-    }
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
 
-    public function quotes(): HasMany
-    {
-        return $this->hasMany(Quote::class);
-    }
+	public function genres(): BelongsToMany
+	{
+		return $this->belongsToMany(Genre::class);
+	}
 
-    public function scopeSearch($query, $searchKey)
-    {
+	public function quotes(): HasMany
+	{
+		return $this->hasMany(Quote::class);
+	}
 
-        if (isset($searchKey) && trim($searchKey)[0] === '@') {
-            $search = ltrim($searchKey, $searchKey[0]);
-            $query->where('title->en', 'like', '%' . $search . '%')
-                ->orWhere('title->ka', 'like', '%' . $search . '%');
-        }
-
-
-
-    }
+	public function scopeSearch($query, $searchKey)
+	{
+		if (isset($searchKey) && trim($searchKey)[0] === '@') {
+			$search = ltrim($searchKey, $searchKey[0]);
+			$query->where('title->en', 'like', '%' . $search . '%')
+				->orWhere('title->ka', 'like', '%' . $search . '%');
+		}
+	}
 }
