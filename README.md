@@ -86,7 +86,7 @@ if you've completed getting started section, then migrating database if fairly s
 ```bash
 php artisan migrate
 
-php artisan db:seed '--class=GenreSeed'
+php artisan db:seed '--class=GenreSeeder'
 ```
 
 ### Development
