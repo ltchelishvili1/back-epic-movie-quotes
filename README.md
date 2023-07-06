@@ -1,66 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Epic Movie Quotes
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Epic Movie Quotes is a website where we may sign up, go through authorisation (and retrieve our passwords if we forget them), and search out quotes of movies, add movies. add quotes, comment and like them and also have our own profile page
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   [Prerequisites](#prerequisites)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [Tech Stack](#tech-stack)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   [Getting Started](#getting-started)
 
-## Learning Laravel
+-   [Migrations](#migration)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   [Development](#development)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Prerequisites
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   PHP@8.x and up
+-   MYSQL@8 and up
+-   npm@9.x and up
+-   composer@2 and up
 
-## Laravel Sponsors
+## Tech Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   Laravel@10.6.2 - back-end framework
+-   Spatie Translatable - package for translation
+-   Tailwind3.3.1@up - front-end framework
 
-### Premium Partners
+## Getting Started
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+clone project from githun repository
 
-## Contributing
+```bash
+  git https://github.com/RedberryInternship/levan-tchelishvili-epic-movie-quotes-back
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Run composer install to install dependencies
 
-## Code of Conduct
+```bash
+  composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Install JS dependencies
 
-## Security Vulnerabilities
+```bash
+  npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Now we need to set our env file. Go to the root of your project and execute this command.
 
-## License
+```bash
+cp .env.example .env
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Update .env file
+
+mysql
+
+`DB_CONNECTION=mysql`
+
+`DB_HOST=127.0.0.1`
+
+`DB_PORT=3306`
+
+`DB_DATABASE=*****`
+
+`DB_USERNAME=*****`
+
+`DB_PASSWORD=*****`
+
+after setting up .enc run command
+
+```bash
+ php artisan key:generate
+```
+
+Which generates auth key.
+
+#### Now, you should be good to go!
+
+### Migration
+
+if you've completed getting started section, then migrating database if fairly simple process, just execute:
+
+```bash
+php artisan migrate
+
+php artisan db:seed '--class=GenreSeeder'
+```
+
+### Development
+
+You can run Laravel's built-in development server by executing:
+
+```bash
+php artisan serve
+```
+
+when working on JS you may run:
+
+```bash
+ npm run dev
+```
+
+it builds your js files into executable scripts. If you want to watch files during development, execute instead:
+
+```bash
+  npm run watch
+```
+
+it will watch JS files and on change it'll rebuild them, so you don't have to manually build them.
+
+![Epic Movie Quotes DrawSql](public/images/EpicMovieQuotesDrawSql.png)
