@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Quote\StoreQuoteRequest;
 use App\Http\Requests\Quote\UpdateQuoteRequest;
-use App\Http\Resources\QuoteCardResource;
-use App\Http\Resources\QuoteResource;
+use App\Http\Resources\Quote\QuoteCardResource;
+use App\Http\Resources\Quote\QuoteResource;
 use App\Models\Quote;
 use App\Services\FileUploadService;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ class QuoteController extends Controller
 		$quotes = Quote::with(['movie', 'user', 'likes', 'comments.user'])
 			->search($searchKey)
 			->orderByDesc('id')
-			->simplePaginate(3);
+			->simplePaginate(6);
 
 		if (isset($searchKey) && (trim($searchKey)[0] === '#')) {
 			return response()->json(['quotes' => QuoteCardResource::collection($quotes)], 200);

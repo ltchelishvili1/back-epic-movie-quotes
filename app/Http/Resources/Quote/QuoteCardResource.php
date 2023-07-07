@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Quote;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NotificationSenderResource extends JsonResource
+class QuoteCardResource extends JsonResource
 {
 	/**
 	 * Transform the resource into an array.
@@ -15,9 +15,10 @@ class NotificationSenderResource extends JsonResource
 	public function toArray(Request $request): array
 	{
 		return [
-			'thumbnail'  => $this->thumbnail,
-			'created_at' => $this->created_at,
-			'username'   => $this->username,
+			'id'       => $this->id,
+			'image'    => $this->image,
+			'quote'    => $this->getTranslations('quote'),
+			'movie_id' => $this->movie_id,
 		];
 	}
 }

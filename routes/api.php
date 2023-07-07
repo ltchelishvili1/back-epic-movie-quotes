@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\GenreController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\OAuthController;
 use App\Http\Controllers\EmailVerifyController;
-use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\FeedBack\CommentController;
+use App\Http\Controllers\FeedBack\LikeController;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\LikeController;
-use App\Http\Controllers\MovieController;
+use App\Http\Controllers\Movie\GenreController;
+use App\Http\Controllers\Movie\MovieController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\RegisterController;

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Movie;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\UpdateMovieRequest;
 use App\Http\Requests\Movie\StoreMovieRequest;
-use App\Http\Resources\MovieResource;
+use App\Http\Resources\Movie\MovieResource;
 use App\Models\Movie;
 use App\Services\FileUploadService;
 use Illuminate\Http\JsonResponse;

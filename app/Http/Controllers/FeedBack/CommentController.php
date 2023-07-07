@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FeedBack;
 
 use App\Events\UserFeedBack;
 use App\Events\UserLiked;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\CommentResource;
-use App\Http\Resources\NotificationResource;
+use App\Http\Resources\Notification\NotificationResource;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\User;
