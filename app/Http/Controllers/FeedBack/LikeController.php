@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FeedBack;
 
 use App\Events\UserFeedBack;
 use App\Events\UserLiked;
 use App\Events\UserUnLiked;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLikeRequest;
-use App\Http\Resources\NotificationResource;
+use App\Http\Resources\Notification\NotificationResource;
 use App\Models\Like;
 use App\Models\Notification;
 use App\Models\Quote;

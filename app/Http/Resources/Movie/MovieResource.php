@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Movie;
 
+use App\Http\Resources\Quote\QuoteResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MovieResource extends JsonResource
