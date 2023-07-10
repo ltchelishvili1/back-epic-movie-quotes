@@ -1,5 +1,6 @@
 <?php
 
+use App\Broadcasting\FeedBackChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -13,6 +14,4 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('feedback-{userId}', function ($user, $userId) {
-	return $user->id === (int)$userId;
-});
+Broadcast::channel('feedback-{userId}', FeedBackChannel::class);
