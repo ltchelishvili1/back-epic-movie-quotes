@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group(
 		Route::controller(NotificationController::class)->group(function () {
 			Route::get('notifications', 'index')->name('notiification.index');
 			Route::patch('notifications', 'update')->name('notiification.update');
+			Route::get('notifications/mark-all-as-read', 'markAllAsRead')->name('notification.markAllAsRead');
 		});
 	}
 );
