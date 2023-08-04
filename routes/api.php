@@ -69,9 +69,10 @@ Route::middleware('auth:sanctum')->group(
 		Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
 
 		Route::controller(UserController::class)->group(function () {
-			Route::get('/user', 'index')->name('user.index');
+			Route::get('/user/{user}', 'show')->name('user.show');
 			Route::patch('/user', 'update')->name('user.update');
 			Route::patch('/user-email-update', 'updateEmail')->name('user.update-email');
+			Route::get('/auth-user', 'index')->name('user.index');
 		});
 
 		Route::controller(LikeController::class)->group(function () {
