@@ -44,4 +44,5 @@ return [
 	'check_email'                           => 'Instruction sent to email',
 	'logged_out'                            => 'Logged out',
 	'verification'                          => 'Verification',
+	'notification_all_read'					=> 	'Notifications marked as read'
 ];
