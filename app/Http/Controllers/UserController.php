@@ -30,6 +30,28 @@ class UserController extends Controller
 		);
 	}
 
+	public function show(Request $request, $user): JsonResponse
+	{
+		$existing_user = User::with('quotes', 'movies')->withCount('likes', 'comments')->find($user);
+
+		if (!$existing_user) {
+			return response()->json(
+				[
+					'message' => __('validation.user_not_found'),
+				],
+				404
+			);
+		}
+
+		return response()->json(
+			[
+				'message' => __('validation.user_found'),
+				'user'    => new UserResource($existing_user),
+			],
+			200
+		);
+	}
+
 	public function update(UpdateProfileRequest $request): JsonResponse
 	{
 		$validated = $request->validated();
